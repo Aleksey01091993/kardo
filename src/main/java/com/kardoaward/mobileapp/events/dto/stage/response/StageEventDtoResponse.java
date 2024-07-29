@@ -1,4 +1,4 @@
-package com.kardoaward.mobileapp.events.dto;
+package com.kardoaward.mobileapp.events.dto.stage.response;
 
 import java.time.LocalDate;
 
@@ -8,9 +8,6 @@ public record StageEventDtoResponse(
         String name,
         LocalDate start,
         LocalDate end,
-        String result,
-        String statusUser,
-        String level,
         String task
 ) {
 }
