@@ -12,13 +12,10 @@ import java.util.List;
 
 public interface EventService {
 
-    @Transactional
     void create(CreateEventDtoRequest eventDto);
 
-    @Transactional
     void update(UpdateEventDtoRequest eventDto);
 
-    @Transactional
     void delete(Long id);
 
     List<EventShortDtoResponse> findAllShortsDto();
