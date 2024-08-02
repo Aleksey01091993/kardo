@@ -15,7 +15,6 @@ import java.util.Objects;
 @Builder
 @Table(name = "stages")
 @AllArgsConstructor
-@NoArgsConstructor
 public class Stage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

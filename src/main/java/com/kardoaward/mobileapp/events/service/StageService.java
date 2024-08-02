@@ -1,4 +1,4 @@
-package com.kardoaward.mobileapp.events.service.impl;
+package com.kardoaward.mobileapp.events.service;
 
 import com.kardoaward.mobileapp.events.dto.stage.request.CreateStageDtoRequest;
 import com.kardoaward.mobileapp.events.dto.stage.request.UpdateStageDtoRequest;
@@ -9,15 +9,13 @@ import java.util.List;
 
 public interface StageService {
 
-
     void create(Long eventId, CreateStageDtoRequest stage);
 
+    void update(Long eventId, Long stageId, UpdateStageDtoRequest stage);
 
-    void update(Long eventId, UpdateStageDtoRequest stage);
-
+    void updateById(Long stageId, UpdateStageDtoRequest stage);
 
     void delete(Long stageId);
-
 
     List<Stage> updateAllStatus(List<Stage> stage);
 

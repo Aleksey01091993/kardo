@@ -1,6 +1,7 @@
 package com.kardoaward.mobileapp.events.dto.stage.request;
 
 
+import jakarta.validation.constraints.FutureOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,10 +14,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateStageDtoRequest {
-    private Long id;
     private String name;
     private String status;
+    @FutureOrPresent
     private LocalDate startDate;
+    @FutureOrPresent
     private LocalDate endDate;
     private String task;
 }

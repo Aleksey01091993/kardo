@@ -1,4 +1,4 @@
-package com.kardoaward.mobileapp.events.service;
+package com.kardoaward.mobileapp.events.service.impl;
 
 import com.kardoaward.mobileapp.events.dto.event.request.CreateEventDtoRequest;
 import com.kardoaward.mobileapp.events.dto.event.request.UpdateEventDtoRequest;
@@ -11,7 +11,8 @@ import com.kardoaward.mobileapp.events.mapper.EventMapper;
 import com.kardoaward.mobileapp.events.model.Event;
 import com.kardoaward.mobileapp.events.model.Stage;
 import com.kardoaward.mobileapp.events.repository.EventRepository;
-import com.kardoaward.mobileapp.events.service.impl.EventService;
+import com.kardoaward.mobileapp.events.repository.StageRepository;
+import com.kardoaward.mobileapp.events.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,29 +27,25 @@ import java.util.List;
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
+    private final StageRepository stageRepository;
 
     @Override
     @Transactional
     public void create(CreateEventDtoRequest eventDto) {
-        isNull(eventDto);
-        isLocalDate(eventDto);
+        isDate(eventDto.getEndDate(), eventDto.getStartDate());
         eventRepository.save(EventMapper.create(eventDto));
-
     }
 
     @Override
     @Transactional
     public void update(UpdateEventDtoRequest eventDto) {
-        isNull(eventDto);
-        isLocalDate(eventDto);
+        isUpdate(eventDto);
         eventRepository.save(EventMapper.update(eventDto, findById(eventDto.getId())));
-
     }
 
     @Override
     @Transactional
     public void delete(Long id) {
-        isNull(id);
         eventRepository.delete(findById(id));
     }
 
@@ -59,14 +56,12 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventShortDtoResponse findByEventShortId(Long id) {
-        isNull(id);
         return EventMapper.findShorts(updateStatus(List.of(findById(id))).get(0));
 
     }
 
     @Override
     public EventDtoResponse findByEventDtoId(Long id) {
-        isNull(id);
         return EventMapper.findEventDto(updateStatus(List.of(findById(id))).get(0));
 
     }
@@ -78,7 +73,6 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventFullDtoResponse findByIdEventFullDto(Long id) {
-        isNull(id);
         return EventMapper.findFullDto(updateStatus(List.of(findById(id))).get(0));
 
     }
@@ -112,49 +106,16 @@ public class EventServiceImpl implements EventService {
         );
     }
 
-    private void isNull(Object object) {
-        if (object == null) {
-            throw new NullRequestException("Event or id cannot be null");
+    private void isUpdate(final UpdateEventDtoRequest updateEvent) {
+        isDate(updateEvent.getEndDate(), updateEvent.getStartDate());
+        if (!stageRepository.findByEvent_IdAndStartBeforeOrEndAfter
+                (updateEvent.getId(), updateEvent.getStartDate(), updateEvent.getEndDate()).isEmpty()) {
+            throw new LocalDateRequestException("The time of the event goes beyond the time frame of the stages");
         }
     }
 
-    private void isLocalDate(Object object) {
-        LocalDate startDate = null;
-        LocalDate endDate = null;
-
-        if (object instanceof CreateEventDtoRequest) {
-            startDate = ((CreateEventDtoRequest) object).getStartDate();
-            endDate = ((CreateEventDtoRequest) object).getEndDate();
-        } else if (object instanceof UpdateEventDtoRequest) {
-            startDate = ((UpdateEventDtoRequest) object).getStartDate();
-            endDate = ((UpdateEventDtoRequest) object).getEndDate();
-            Event event = findById(((UpdateEventDtoRequest) object).getId());
-            if (!event.getStages().isEmpty()) {
-                LocalDate stageCanceledDate = null;
-                LocalDate stageStartedDate = null;
-                for (Stage stage : event.getStages()) {
-                    if (stageStartedDate == null || stage.getStart().isAfter(stageStartedDate)) {
-                        stageStartedDate = stage.getStart();
-                    }
-                    if (stageCanceledDate == null || stage.getEnd().isBefore(stageCanceledDate)) {
-                        stageCanceledDate = stage.getEnd();
-                    }
-                }
-                if (startDate.isAfter(stageStartedDate) && startDate.isBefore(stageCanceledDate)) {
-                    throw new LocalDateRequestException("The start date falls within the interval between the dates" +
-                            " of the stages");
-                }
-
-                if (endDate.isAfter(stageStartedDate) && endDate.isBefore(stageCanceledDate)) {
-                    throw new LocalDateRequestException("The end date falls within the interval between the dates" +
-                            " of the stages");
-                }
-
-            }
-
-        }
-        if (startDate.isAfter(LocalDate.now()) ||
-                endDate.isAfter(startDate)) {
+    private void isDate(final LocalDate end, final LocalDate start) {
+        if (end.isBefore(start)) {
             throw new LocalDateRequestException("the start date of the event must be later today," +
                     " the end date of the event must be later than the start date of the event");
         }

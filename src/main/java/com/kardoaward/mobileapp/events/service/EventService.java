@@ -1,4 +1,4 @@
-package com.kardoaward.mobileapp.events.service.impl;
+package com.kardoaward.mobileapp.events.service;
 
 import com.kardoaward.mobileapp.events.dto.event.request.CreateEventDtoRequest;
 import com.kardoaward.mobileapp.events.dto.event.request.UpdateEventDtoRequest;
@@ -6,7 +6,6 @@ import com.kardoaward.mobileapp.events.dto.event.response.EventDtoResponse;
 import com.kardoaward.mobileapp.events.dto.event.response.EventFullDtoResponse;
 import com.kardoaward.mobileapp.events.dto.event.response.EventShortDtoResponse;
 import com.kardoaward.mobileapp.events.model.Event;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

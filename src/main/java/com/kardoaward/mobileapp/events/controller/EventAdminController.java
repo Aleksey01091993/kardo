@@ -5,7 +5,9 @@ import com.kardoaward.mobileapp.events.dto.event.request.UpdateEventDtoRequest;
 import com.kardoaward.mobileapp.events.dto.event.response.EventDtoResponse;
 import com.kardoaward.mobileapp.events.dto.event.response.EventFullDtoResponse;
 import com.kardoaward.mobileapp.events.dto.event.response.EventShortDtoResponse;
-import com.kardoaward.mobileapp.events.service.impl.EventService;
+import com.kardoaward.mobileapp.events.service.EventService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,14 +26,14 @@ public class EventAdminController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody CreateEventDtoRequest eventDto) {
+    public void create(@RequestBody @Valid CreateEventDtoRequest eventDto) {
         log.info("Пришел POST запрос /admin/events с телом: {}", eventDto);
         eventService.create(eventDto);
         log.info("Отправлен статус 201 без тела");
     }
 
     @PatchMapping
-    public void update(@RequestBody UpdateEventDtoRequest eventDto) {
+    public void update(@RequestBody @Valid UpdateEventDtoRequest eventDto) {
         log.info("Пришел PATH запрос /admin/events с телом: {}", eventDto);
         eventService.update(eventDto);
         log.info("Отправлен статус 200 без тела");
@@ -39,7 +41,7 @@ public class EventAdminController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable @Valid Long id) {
         log.info("Пришел DELETE запрос /admin/events/{}", id);
         eventService.delete(id);
         log.info("Отправлен статус 204 без тела");
@@ -61,19 +63,11 @@ public class EventAdminController {
         return response;
     }
 
-    @GetMapping("/{id}")
-    public EventDtoResponse findByEventDtoId(@PathVariable Long id) {
-        log.info("Пришел GET запрос /admin/events/{}", id);
-        final EventDtoResponse response = eventService.findByEventDtoId(id);
-        log.info("Отправлен ответ для GET запроса /admin/events/{} с телом: {}", id, response);
-        return response;
-    }
-
-    @GetMapping("/all")
-    public List<EventDtoResponse> findByAllEventDto() {
-        log.info("Пришел GET запрос /admin/events/all");
-        final List<EventDtoResponse> response = eventService.findByAllEventDto();
-        log.info("Отправлен ответ для GET запроса /admin/events/all с телом: {}", response);
+    @GetMapping("/full")
+    public List<EventFullDtoResponse> findAllEventFullDto() {
+        log.info("Пришел GET запрос /admin/events/full");
+        final List<EventFullDtoResponse> response = eventService.findAllEventFullDto();
+        log.info("Отправлен ответ для GET запроса /admin/events/ful с телом: {}", response);
         return response;
     }
 
@@ -85,12 +79,24 @@ public class EventAdminController {
         return response;
     }
 
-    @GetMapping("/full")
-    public List<EventFullDtoResponse> findAllEventFullDto() {
-        log.info("Пришел GET запрос /admin/events/full");
-        final List<EventFullDtoResponse> response = eventService.findAllEventFullDto();
-        log.info("Отправлен ответ для GET запроса /admin/events/ful с телом: {}", response);
+    @GetMapping("/{id}")
+    public EventDtoResponse findByEventDtoId(@PathVariable Long id) {
+        log.info("Пришел GET запрос /admin/events/{}", id);
+        final EventDtoResponse response = eventService.findByEventDtoId(id);
+        log.info("Отправлен ответ для GET запроса /admin/events/{} с телом: {}", id, response);
         return response;
     }
+
+    @GetMapping
+    public List<EventDtoResponse> findByAllEventDto() {
+        log.info("Пришел GET запрос /admin/events");
+        final List<EventDtoResponse> response = eventService.findByAllEventDto();
+        log.info("Отправлен ответ для GET запроса /admin/events/all с телом: {}", response);
+        return response;
+    }
+
+
+
+
 
 }
