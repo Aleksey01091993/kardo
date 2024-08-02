@@ -1,17 +1,17 @@
 package com.kardoaward.mobileapp.events.service.impl;
 
-import com.kardoaward.mobileapp.events.dto.event.request.CreateEventDtoRequest;
-import com.kardoaward.mobileapp.events.dto.event.request.UpdateEventDtoRequest;
-import com.kardoaward.mobileapp.events.dto.event.response.EventDtoResponse;
-import com.kardoaward.mobileapp.events.dto.event.response.EventFullDtoResponse;
-import com.kardoaward.mobileapp.events.dto.event.response.EventShortDtoResponse;
-import com.kardoaward.mobileapp.events.exeption.LocalDateRequestException;
-import com.kardoaward.mobileapp.events.exeption.NullRequestException;
+import com.kardoaward.mobileapp.events.dto.request.CreateEventDtoRequest;
+import com.kardoaward.mobileapp.events.dto.request.UpdateEventDtoRequest;
+import com.kardoaward.mobileapp.events.dto.event.response.*;
+import com.kardoaward.mobileapp.events.dto.response.*;
+import com.kardoaward.mobileapp.exeption.LocalDateRequestException;
+import com.kardoaward.mobileapp.exeption.NullRequestException;
 import com.kardoaward.mobileapp.events.mapper.EventMapper;
 import com.kardoaward.mobileapp.events.model.Event;
-import com.kardoaward.mobileapp.events.model.Stage;
+import com.kardoaward.mobileapp.stage.model.Stage;
 import com.kardoaward.mobileapp.events.repository.EventRepository;
-import com.kardoaward.mobileapp.events.repository.StageRepository;
+import com.kardoaward.mobileapp.stage.repository.StageRepository;
+import com.kardoaward.mobileapp.events.response.*;
 import com.kardoaward.mobileapp.events.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -61,6 +61,11 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public List<EventNameDtoResponse> findAllName() {
+        return EventMapper.mapAllNames(eventRepository.findAll());
+    }
+
+    @Override
     public EventDtoResponse findByEventDtoId(Long id) {
         return EventMapper.findEventDto(updateStatus(List.of(findById(id))).get(0));
 
@@ -80,6 +85,11 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventFullDtoResponse> findAllEventFullDto() {
         return EventMapper.findAllFullDto(updateStatus(eventRepository.findAll()));
+    }
+
+    @Override
+    public List<EventToEpicDtoResponse> findAllToEpic() {
+        return EventMapper.mapAllToEpic(eventRepository.findAll());
     }
 
     @Override

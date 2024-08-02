@@ -1,14 +1,11 @@
-package com.kardoaward.mobileapp.events.model;
+package com.kardoaward.mobileapp.epic.model;
 
-import com.kardoaward.mobileapp.epic.model.Epic;
-import com.kardoaward.mobileapp.request.model.RequestEvents;
-import com.kardoaward.mobileapp.stage.model.Stage;
+
+import com.kardoaward.mobileapp.events.model.Event;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -19,30 +16,18 @@ import java.util.Objects;
 @Table(name = "events")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Event {
+public class Epic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "event_status")
-    private String eventStatus;
     @Column(name = "name")
     private String name;
     @Column(name = "description")
     private String description;
-    @Column(name = "event_date_start")
-    private LocalDate start;
-    @Column(name = "event_date_end")
-    private LocalDate end;
-    @Column(name = "level")
-    private String level;
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<Stage> stages;
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<Epic> epics;
-
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "event_id", referencedColumnName = "id")
+    private Event event;
 
     @Override
     public final boolean equals(Object o) {

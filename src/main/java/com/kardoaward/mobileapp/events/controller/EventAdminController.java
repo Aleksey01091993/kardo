@@ -1,13 +1,12 @@
 package com.kardoaward.mobileapp.events.controller;
 
-import com.kardoaward.mobileapp.events.dto.event.request.CreateEventDtoRequest;
-import com.kardoaward.mobileapp.events.dto.event.request.UpdateEventDtoRequest;
-import com.kardoaward.mobileapp.events.dto.event.response.EventDtoResponse;
-import com.kardoaward.mobileapp.events.dto.event.response.EventFullDtoResponse;
-import com.kardoaward.mobileapp.events.dto.event.response.EventShortDtoResponse;
+import com.kardoaward.mobileapp.events.dto.request.CreateEventDtoRequest;
+import com.kardoaward.mobileapp.events.dto.request.UpdateEventDtoRequest;
+import com.kardoaward.mobileapp.events.dto.response.EventDtoResponse;
+import com.kardoaward.mobileapp.events.dto.response.EventFullDtoResponse;
+import com.kardoaward.mobileapp.events.dto.response.EventShortDtoResponse;
 import com.kardoaward.mobileapp.events.service.EventService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

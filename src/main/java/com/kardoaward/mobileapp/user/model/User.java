@@ -1,5 +1,7 @@
 package com.kardoaward.mobileapp.user.model;
 
+import com.kardoaward.mobileapp.events.model.Event;
+import com.kardoaward.mobileapp.request.model.RequestEvents;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,7 +10,10 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import jakarta.persistence.*;
+import lombok.ToString;
+
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
@@ -36,6 +41,9 @@ public class User {
     private String portfolioUrl;
     private String country;
     private String city;
+    @ToString.Exclude
+    @OneToMany(mappedBy = "requester", cascade = CascadeType.ALL)
+    private List<RequestEvents> requests;
     @Enumerated(EnumType.STRING)
     private UserRoles role = UserRoles.ROLE_USER;
 }

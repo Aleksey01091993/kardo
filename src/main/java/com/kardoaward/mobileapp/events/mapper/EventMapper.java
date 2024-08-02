@@ -1,12 +1,14 @@
 package com.kardoaward.mobileapp.events.mapper;
 
 
-import com.kardoaward.mobileapp.events.dto.event.request.CreateEventDtoRequest;
-import com.kardoaward.mobileapp.events.dto.event.request.UpdateEventDtoRequest;
-import com.kardoaward.mobileapp.events.dto.event.response.EventDtoResponse;
-import com.kardoaward.mobileapp.events.dto.event.response.EventFullDtoResponse;
-import com.kardoaward.mobileapp.events.dto.event.response.EventShortDtoResponse;
+import com.kardoaward.mobileapp.epic.mapper.EpicMapper;
+import com.kardoaward.mobileapp.events.dto.request.CreateEventDtoRequest;
+import com.kardoaward.mobileapp.events.dto.request.UpdateEventDtoRequest;
+import com.kardoaward.mobileapp.events.dto.event.response.*;
+import com.kardoaward.mobileapp.events.dto.response.*;
 import com.kardoaward.mobileapp.events.model.Event;
+import com.kardoaward.mobileapp.events.response.*;
+import com.kardoaward.mobileapp.stage.mapper.StageMapper;
 
 import java.util.List;
 
@@ -40,10 +42,25 @@ public class EventMapper {
         return event;
     }
 
+    public static List<EventNameDtoResponse> mapAllNames(List<Event> events) {
+        return events.stream()
+                .map(o1 -> new EventNameDtoResponse(o1.getId(), o1.getName()))
+                .toList();
+    }
+
     public static List<EventShortDtoResponse> findAllShorts(List<Event> event) {
         return event.stream()
                 .map(EventMapper::findShorts)
                 .toList();
+    }
+
+    public static EventToEpicDtoResponse mapToEpic(Event event) {
+        return new EventToEpicDtoResponse(event.getId(), event.getName(), event.getDescription(),
+                event.getEpics().stream().map(EpicMapper::mapEpicDto).toList());
+    }
+
+    public static List<EventToEpicDtoResponse> mapAllToEpic(List<Event> event) {
+        return event.stream().map(EventMapper::mapToEpic).toList();
     }
 
     public static EventShortDtoResponse findShorts(Event event) {
