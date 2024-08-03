@@ -67,19 +67,5 @@ public class EpicAdminController {
         return response;
     }
 
-    @GetMapping("/event/{eventId}")
-    public List<EpicDtoResponse> findAllEventId(@PathVariable Long eventId) {
-        log.info("Пришел GET запрос /admin/epic/event/{}", eventId);
-        final List<EpicDtoResponse> response = epicService.findAllEventId(eventId);
-        log.info("Отправлен ответ для GET запроса /admin/epic/event/{} с телом: {}", eventId, response);
-        return response;
-    }
 
-    @GetMapping("/{epicId}")
-    public EpicDtoResponse findById(@PathVariable Long epicId) {
-        log.info("Пришел GET запрос /admin/epic/full/{}", epicId);
-        final EpicDtoResponse response = epicService.findById(epicId);
-        log.info("Отправлен ответ для GET запроса /admin/epic/{} с телом: {}", epicId, response);
-        return response;
-    }
 }

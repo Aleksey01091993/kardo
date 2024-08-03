@@ -2,9 +2,7 @@ package com.kardoaward.mobileapp.events.controller;
 
 import com.kardoaward.mobileapp.events.dto.request.CreateEventDtoRequest;
 import com.kardoaward.mobileapp.events.dto.request.UpdateEventDtoRequest;
-import com.kardoaward.mobileapp.events.dto.response.EventDtoResponse;
 import com.kardoaward.mobileapp.events.dto.response.EventFullDtoResponse;
-import com.kardoaward.mobileapp.events.dto.response.EventShortDtoResponse;
 import com.kardoaward.mobileapp.events.service.EventService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -46,22 +44,6 @@ public class EventAdminController {
         log.info("Отправлен статус 204 без тела");
     }
 
-    @GetMapping("/shorts")
-    public List<EventShortDtoResponse> findAllShortsDto() {
-        log.info("Пришел GET запрос /admin/events/shorts");
-        final List<EventShortDtoResponse> response = eventService.findAllShortsDto();
-        log.info("Отправлен ответ для GET запроса /admin/events/shorts с телом: {}", response);
-        return response;
-    }
-
-    @GetMapping("/shorts/{id}")
-    public EventShortDtoResponse findByEventShortId(@PathVariable Long id) {
-        log.info("Пришел GET запрос /admin/events/shorts/{}", id);
-        final EventShortDtoResponse response = eventService.findByEventShortId(id);
-        log.info("Отправлен ответ для GET запроса /admin/events/shorts/{} с телом: {}", id, response);
-        return response;
-    }
-
     @GetMapping("/full")
     public List<EventFullDtoResponse> findAllEventFullDto() {
         log.info("Пришел GET запрос /admin/events/full");
@@ -78,21 +60,6 @@ public class EventAdminController {
         return response;
     }
 
-    @GetMapping("/{id}")
-    public EventDtoResponse findByEventDtoId(@PathVariable Long id) {
-        log.info("Пришел GET запрос /admin/events/{}", id);
-        final EventDtoResponse response = eventService.findByEventDtoId(id);
-        log.info("Отправлен ответ для GET запроса /admin/events/{} с телом: {}", id, response);
-        return response;
-    }
-
-    @GetMapping
-    public List<EventDtoResponse> findByAllEventDto() {
-        log.info("Пришел GET запрос /admin/events");
-        final List<EventDtoResponse> response = eventService.findByAllEventDto();
-        log.info("Отправлен ответ для GET запроса /admin/events/all с телом: {}", response);
-        return response;
-    }
 
 
 

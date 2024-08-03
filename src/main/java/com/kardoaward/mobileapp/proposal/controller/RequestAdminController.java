@@ -1,10 +1,10 @@
-package com.kardoaward.mobileapp.request.controller;
+package com.kardoaward.mobileapp.proposal.controller;
 
 
-import com.kardoaward.mobileapp.proposal.dto.response.RequestResponse;
 import com.kardoaward.mobileapp.proposal.dto.request.StatusAdminToRequest;
 import com.kardoaward.mobileapp.proposal.dto.request.StatusUserToRequest;
-import com.kardoaward.mobileapp.request.service.RequestService;
+import com.kardoaward.mobileapp.proposal.dto.response.RequestResponse;
+import com.kardoaward.mobileapp.proposal.service.RequestService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,10 +15,11 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("requests/admin/request")
-public class AdminRequestController {
+@RequestMapping("requests/admin")
+public class RequestAdminController {
 
     private final RequestService requestService;
+
 
     @PostMapping("/{requestId}")
     public void updateRequest(
@@ -46,26 +47,4 @@ public class AdminRequestController {
         log.info("Отправлен ответ для GET запроса requests/admin/request/allUser с телом: {}", response);
         return response;
     }
-
-    ;
-
-    @GetMapping("/allAdmin")
-    public List<RequestResponse> findAllAdminStatus(StatusAdminToRequest dto) {
-        log.info("Пришел GET запрос requests/admin/request/allAdmin");
-        final List<RequestResponse> response = requestService.findAllAdminStatus(dto);
-        log.info("Отправлен ответ для GET запроса requests/admin/request/allAdmin с телом: {}", response);
-        return response;
-    }
-
-    ;
-
-    @GetMapping("/{requestId}")
-    public RequestResponse findById(@PathVariable Long requestId) {
-        log.info("Пришел GET запрос requests/admin/request/{}", requestId);
-        final RequestResponse response = requestService.findById(requestId);
-        log.info("Отправлен ответ для GET запроса requests/admin/request/{} с телом: {}", requestId, response);
-        return response;
-    }
-
-    ;
 }

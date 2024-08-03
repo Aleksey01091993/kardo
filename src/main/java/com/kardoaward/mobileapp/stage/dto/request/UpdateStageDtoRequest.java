@@ -15,10 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class UpdateStageDtoRequest {
     private String name;
-    private String status;
-    @FutureOrPresent
     private LocalDate startDate;
-    @FutureOrPresent
     private LocalDate endDate;
     private String task;
 }

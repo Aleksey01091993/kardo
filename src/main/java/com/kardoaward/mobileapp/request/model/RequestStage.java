@@ -1,14 +1,13 @@
 package com.kardoaward.mobileapp.request.model;
 
+
 import com.kardoaward.mobileapp.events.model.Event;
-import com.kardoaward.mobileapp.status.AdminEventStatus;
-import com.kardoaward.mobileapp.status.UserEventStatus;
+import com.kardoaward.mobileapp.stage.model.Stage;
 import com.kardoaward.mobileapp.user.model.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -19,32 +18,24 @@ import java.util.Objects;
 @Table
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestEvents {
+public class RequestStage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "event_id", referencedColumnName = "id")
-    private Event event;
-    @ManyToOne
     @JoinColumn(name = "requester_id", referencedColumnName = "id")
     private User requester;
+    @ManyToOne
+    @JoinColumn(name = "stage_id", referencedColumnName = "id")
+    private Stage stage;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "event_id", referencedColumnName = "id")
+    private RequestEvents requestEvent;
+    @Column(name = "status")
+    private String status;
     @Column(name = "result")
     private String result;
-    @OneToMany(mappedBy = "requestEvent", cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<RequestStage> stages;
-    @Column(name = "place")
-    private Integer place;
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status_to_user")
-    private UserEventStatus statusToUser;
-    @Column(name = "level")
-    private String level;
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private AdminEventStatus status;
 
 
     @Override

@@ -1,5 +1,5 @@
 package com.kardoaward.mobileapp.status;
 
-public enum AdminRequest {
+public enum AdminEventStatus {
     NEW, CONFIRMED, REJECTED
 }

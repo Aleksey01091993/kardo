@@ -4,12 +4,12 @@ import com.kardoaward.mobileapp.exeption.NotFoundException;
 import com.kardoaward.mobileapp.exeption.NullRequestException;
 import com.kardoaward.mobileapp.events.model.Event;
 import com.kardoaward.mobileapp.events.repository.EventRepository;
-import com.kardoaward.mobileapp.request.dto.RequestResponse;
-import com.kardoaward.mobileapp.request.dto.StatusAdminToRequest;
-import com.kardoaward.mobileapp.request.dto.StatusUserToRequest;
-import com.kardoaward.mobileapp.request.mapper.RequestMapper;
+import com.kardoaward.mobileapp.proposal.dto.response.RequestResponse;
+import com.kardoaward.mobileapp.proposal.dto.request.StatusAdminToRequest;
+import com.kardoaward.mobileapp.proposal.dto.request.StatusUserToRequest;
+import com.kardoaward.mobileapp.request.mapper.RequestMapperEvent;
 import com.kardoaward.mobileapp.request.model.RequestEvents;
-import com.kardoaward.mobileapp.request.repository.RequestRepository;
+import com.kardoaward.mobileapp.request.repository.RequestRepositoryEvent;
 import com.kardoaward.mobileapp.request.service.RequestService;
 import com.kardoaward.mobileapp.user.model.User;
 import com.kardoaward.mobileapp.user.repository.UserRepository;
@@ -24,44 +24,46 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class RequestServiceImpl implements RequestService {
 
-    private final RequestRepository requestRepository;
+    private final RequestRepositoryEvent requestRepositoryEvent;
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
 
     @Override
     @Transactional
     public void addRequest(final Long userId, final Long eventId, final StatusUserToRequest dto) {
-        requestRepository.save(RequestMapper.mapAdd(findByUserId(userId), findByEventId(eventId), dto));
+        requestRepositoryEvent.save(RequestMapperEvent.mapAdd(findByUserId(userId), findByEventId(eventId), dto));
     }
 
     @Override
     @Transactional
     public void update(final Long requestId, final StatusAdminToRequest dto) {
-        requestRepository.save(RequestMapper.mapUpdate(findByRequestId(requestId), dto));
+        requestRepositoryEvent.save(RequestMapperEvent.mapUpdate(findByRequestId(requestId), dto));
     }
 
     @Override
     public List<RequestResponse> findAll() {
-        return RequestMapper.mapAll(requestRepository.findAll());
+        return RequestMapperEvent.mapAll(requestRepositoryEvent.findAll());
     }
 
     @Override
     public List<RequestResponse> findAllUserStatus(final StatusUserToRequest dto) {
-        return RequestMapper.mapAll(requestRepository.findAllByStatusToUser(RequestMapper.isStatus(dto)));
+        return RequestMapperEvent.mapAll(requestRepositoryEvent.findAllByStatusToUser(RequestMapperEvent.isStatus(dto)));
     }
 
     @Override
     public List<RequestResponse> findAllAdminStatus(final StatusAdminToRequest dto) {
-        return RequestMapper.mapAll(requestRepository.findAllByStatus(RequestMapper.isAdmin(dto)));
+        return RequestMapperEvent.mapAll(requestRepositoryEvent.findAllByStatus(RequestMapperEvent.isAdmin(dto)));
     }
 
     @Override
     public RequestResponse findById(final Long requestId) {
-        return RequestMapper.mapBy(findByRequestId(requestId));
+        return RequestMapperEvent.mapBy(findByRequestId(requestId));
     }
 
+
+
     private RequestEvents findByRequestId(final Long requestId) {
-        return requestRepository.findById(requestId)
+        return requestRepositoryEvent.findById(requestId)
                 .orElseThrow(() -> new NotFoundException("request not found by id: " + requestId));
     }
 

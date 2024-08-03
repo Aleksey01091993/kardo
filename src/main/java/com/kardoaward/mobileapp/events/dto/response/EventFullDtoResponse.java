@@ -7,12 +7,10 @@ import java.util.List;
 
 public record EventFullDtoResponse(
         Long id,
-        String status,
         String name,
         String description,
         LocalDate start,
         LocalDate end,
-        String level,
         List<StageEventDtoResponse> stage
 ) {
 }

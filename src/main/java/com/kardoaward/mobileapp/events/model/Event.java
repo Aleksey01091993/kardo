@@ -3,6 +3,7 @@ package com.kardoaward.mobileapp.events.model;
 import com.kardoaward.mobileapp.epic.model.Epic;
 import com.kardoaward.mobileapp.request.model.RequestEvents;
 import com.kardoaward.mobileapp.stage.model.Stage;
+import com.kardoaward.mobileapp.user.model.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -24,18 +25,16 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "event_status")
-    private String eventStatus;
     @Column(name = "name")
     private String name;
     @Column(name = "description")
     private String description;
+    @Column(name = "category")
+    private String category;
     @Column(name = "event_date_start")
     private LocalDate start;
     @Column(name = "event_date_end")
     private LocalDate end;
-    @Column(name = "level")
-    private String level;
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Stage> stages;

@@ -57,25 +57,16 @@ public class StageServiceImpl implements StageService {
         stageRepository.delete(getStage(stageId));
     }
 
-    @Override
-    @Transactional
-    public List<Stage> updateAllStatus(List<Stage> stage) {
-        for (Stage s : stage) {
-            if (s.getEnd().isBefore(LocalDate.now())) {
-                s.setStageStatus("Completed");
-            }
-        }
-        return stageRepository.saveAll(stage);
-    }
+
 
     @Override
     public StageEventDtoResponse findByIdStageDto(Long stageId) {
-        return StageMapper.findStageDto(updateAllStatus(List.of(getStage(stageId))).get(0));
+        return StageMapper.findStageDto(getStage(stageId));
     }
 
     @Override
     public List<StageEventDtoResponse> findAllStageDto() {
-        return StageMapper.findAllStageDto(updateAllStatus(stageRepository.findAll()));
+        return StageMapper.findAllStageDto(stageRepository.findAll());
     }
 
     private Event getEvent(Long eventId) {

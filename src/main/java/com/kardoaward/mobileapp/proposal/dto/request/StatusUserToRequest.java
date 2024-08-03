@@ -1,5 +1,4 @@
-package com.kardoaward.mobileapp.request.dto;
-
+package com.kardoaward.mobileapp.proposal.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NotNull
 @AllArgsConstructor
 @NoArgsConstructor
-public class StatusAdminToRequest {
+public class StatusUserToRequest {
     @NotBlank
     private String status;
 }
