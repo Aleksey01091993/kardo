@@ -4,6 +4,7 @@ import com.kardoaward.mobileapp.video.model.Video;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface VideoService {
 
@@ -11,5 +12,5 @@ public interface VideoService {
 
     List<Video> getAllVideosByUserId(Long userId);
 
-    Video getVideoById(Long id);
+    Video getVideoByIdAndUserId(Long userId, Long id);
 }

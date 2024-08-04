@@ -52,10 +52,10 @@ public class UserController {
         return videoService.getAllVideosByUserId(id);
     }
 
-    @GetMapping("/user/{id}/videos/{id}")
+    @GetMapping("/user/{userId}/videos/{videoId}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Получение видео пользователя по id видео")
-    public Video getVideoById(@PathVariable Long id) {
-        return videoService.getVideoById(id);
+    public Video getVideoById(@PathVariable Long userId, @PathVariable Long videoId) {
+        return videoService.getVideoByIdAndUserId(userId, videoId);
     }
 }

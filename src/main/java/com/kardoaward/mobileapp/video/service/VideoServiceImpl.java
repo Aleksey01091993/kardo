@@ -58,7 +58,8 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public Video getVideoById(Long id) {
-        return videoRepository.findById(id).orElseThrow(() -> new NotFoundException("Видео с таким id не найдено"));
+    public Video getVideoByIdAndUserId(Long userId, Long id) {
+        return videoRepository.findByUserIdAndId(userId, id).
+                orElseThrow(() -> new NotFoundException("Видео с таким id не найдено"));
     }
 }
