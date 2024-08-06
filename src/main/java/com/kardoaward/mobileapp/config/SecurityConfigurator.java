@@ -62,6 +62,7 @@ public class SecurityConfigurator {
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/profile").fullyAuthenticated()
+                        .requestMatchers("/user/**").fullyAuthenticated()
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
