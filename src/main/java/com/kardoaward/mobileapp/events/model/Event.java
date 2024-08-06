@@ -1,9 +1,8 @@
 package com.kardoaward.mobileapp.events.model;
 
 import com.kardoaward.mobileapp.epic.model.Epic;
-import com.kardoaward.mobileapp.request.model.RequestEvents;
+import com.kardoaward.mobileapp.request.model.Request;
 import com.kardoaward.mobileapp.stage.model.Stage;
-import com.kardoaward.mobileapp.user.model.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -41,6 +40,9 @@ public class Event {
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Epic> epics;
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<Request> requests;
 
 
     @Override

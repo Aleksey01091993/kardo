@@ -1,17 +1,17 @@
 package com.kardoaward.mobileapp.request.dto.response;
 
-import com.kardoaward.mobileapp.status.UserEventStatus;
+import com.kardoaward.mobileapp.status.UserStatus;
 
 import java.time.LocalDate;
 
-public record RequestShortDtoResponse(
+public record RequestStageShortDtoResponse(
         Long id,
         String name,
         LocalDate start,
         LocalDate end,
-        UserEventStatus status,
+        UserStatus status,
         String stageName,
-        String level,
-        Integer place
+        String place,
+        String level
 ) {
 }

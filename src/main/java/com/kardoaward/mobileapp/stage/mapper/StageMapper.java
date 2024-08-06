@@ -1,7 +1,7 @@
 package com.kardoaward.mobileapp.stage.mapper;
 
 import com.kardoaward.mobileapp.events.model.Event;
-import com.kardoaward.mobileapp.stage.dto.response.StageEventDtoResponse;
+import com.kardoaward.mobileapp.request.dto.response.StageEventDtoResponse;
 import com.kardoaward.mobileapp.stage.dto.request.CreateStageDtoRequest;
 import com.kardoaward.mobileapp.stage.dto.request.UpdateStageDtoRequest;
 import com.kardoaward.mobileapp.stage.model.Stage;

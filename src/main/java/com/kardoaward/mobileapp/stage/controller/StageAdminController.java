@@ -3,7 +3,7 @@ package com.kardoaward.mobileapp.stage.controller;
 import com.kardoaward.mobileapp.stage.service.StageService;
 import com.kardoaward.mobileapp.stage.dto.request.CreateStageDtoRequest;
 import com.kardoaward.mobileapp.stage.dto.request.UpdateStageDtoRequest;
-import com.kardoaward.mobileapp.stage.dto.response.StageEventDtoResponse;
+import com.kardoaward.mobileapp.request.dto.response.StageEventDtoResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

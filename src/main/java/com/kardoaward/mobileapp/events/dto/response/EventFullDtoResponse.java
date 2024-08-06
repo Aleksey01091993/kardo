@@ -1,6 +1,6 @@
 package com.kardoaward.mobileapp.events.dto.response;
 
-import com.kardoaward.mobileapp.stage.dto.response.StageEventDtoResponse;
+import com.kardoaward.mobileapp.request.dto.response.StageEventDtoResponse;
 
 import java.time.LocalDate;
 import java.util.List;
