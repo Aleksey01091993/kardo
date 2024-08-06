@@ -58,4 +58,4 @@ public class UserController {
     public Video getVideoById(@PathVariable Long userId, @PathVariable Long videoId) {
         return videoService.getVideoByIdAndUserId(userId, videoId);
     }
-}
+}  
