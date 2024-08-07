@@ -1,11 +1,10 @@
 package com.kardoaward.mobileapp.events.service;
 
-import com.kardoaward.mobileapp.events.dto.event.request.CreateEventDtoRequest;
-import com.kardoaward.mobileapp.events.dto.event.request.UpdateEventDtoRequest;
-import com.kardoaward.mobileapp.events.dto.event.response.EventDtoResponse;
-import com.kardoaward.mobileapp.events.dto.event.response.EventFullDtoResponse;
-import com.kardoaward.mobileapp.events.dto.event.response.EventShortDtoResponse;
-import com.kardoaward.mobileapp.events.model.Event;
+import com.kardoaward.mobileapp.events.dto.request.CreateEventDtoRequest;
+import com.kardoaward.mobileapp.events.dto.request.UpdateEventDtoRequest;
+import com.kardoaward.mobileapp.events.dto.response.EventFullDtoResponse;
+import com.kardoaward.mobileapp.events.dto.response.EventNameDtoResponse;
+import com.kardoaward.mobileapp.events.dto.response.EventToEpicDtoResponse;
 
 import java.util.List;
 
@@ -13,21 +12,15 @@ public interface EventService {
 
     void create(CreateEventDtoRequest eventDto);
 
-    void update(UpdateEventDtoRequest eventDto);
+    void update(UpdateEventDtoRequest eventDto, Long eventId);
+
+    List<EventNameDtoResponse> findAllName();
+
+    List<EventToEpicDtoResponse> findAllToEpic();
 
     void delete(Long id);
-
-    List<EventShortDtoResponse> findAllShortsDto();
-
-    EventShortDtoResponse findByEventShortId(Long id);
-
-    EventDtoResponse findByEventDtoId(Long id);
-
-    List<EventDtoResponse> findByAllEventDto();
 
     EventFullDtoResponse findByIdEventFullDto(Long id);
 
     List<EventFullDtoResponse> findAllEventFullDto();
-
-    List<Event> updateStatus(List<Event> events);
 }
