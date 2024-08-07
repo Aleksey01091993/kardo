@@ -2,7 +2,7 @@ package com.kardoaward.mobileapp.stage.service;
 
 import com.kardoaward.mobileapp.stage.dto.request.CreateStageDtoRequest;
 import com.kardoaward.mobileapp.stage.dto.request.UpdateStageDtoRequest;
-import com.kardoaward.mobileapp.request.dto.response.StageEventDtoResponse;
+import com.kardoaward.mobileapp.stage.dto.response.StageDtoResponse;
 
 import java.util.List;
 
@@ -16,9 +16,9 @@ public interface StageService {
 
     void delete(Long stageId);
 
-    StageEventDtoResponse findByIdStageDto(Long stageId);
+    StageDtoResponse findByIdStageDto(Long stageId);
 
-    List<StageEventDtoResponse> findAllStageDto();
+    List<StageDtoResponse> findAllStageDto();
 
 
 }

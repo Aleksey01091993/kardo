@@ -23,7 +23,7 @@ public class Epic {
     private Long id;
     @Column(name = "name")
     private String name;
-    @Column(name = "description")
+    @Column(name = "EventDescription")
     private String description;
     @ManyToOne(optional = false)
     @JoinColumn(name = "event_id", referencedColumnName = "id")

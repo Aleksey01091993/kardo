@@ -10,7 +10,8 @@ public record RequestDetailsDtoResponse(
         String category,
         String stageName,
         String level,
-        String description,
-        List<StageEventDtoResponse> stages
+        String EventDescription,
+        String StageDescription,
+        List<RequestStageDtoResponse> stages
 ) {
 }

@@ -4,7 +4,9 @@ package com.kardoaward.mobileapp.events.mapper;
 import com.kardoaward.mobileapp.epic.mapper.EpicMapper;
 import com.kardoaward.mobileapp.events.dto.request.CreateEventDtoRequest;
 import com.kardoaward.mobileapp.events.dto.request.UpdateEventDtoRequest;
-import com.kardoaward.mobileapp.events.dto.response.*;
+import com.kardoaward.mobileapp.events.dto.response.EventFullDtoResponse;
+import com.kardoaward.mobileapp.events.dto.response.EventNameDtoResponse;
+import com.kardoaward.mobileapp.events.dto.response.EventToEpicDtoResponse;
 import com.kardoaward.mobileapp.events.model.Event;
 import com.kardoaward.mobileapp.stage.mapper.StageMapper;
 
@@ -16,6 +18,7 @@ public class EventMapper {
         return Event.builder()
                 .name(eventDto.getName())
                 .description(eventDto.getDescription())
+                .category(eventDto.getCategory())
                 .start(eventDto.getStartDate())
                 .end(eventDto.getEndDate())
                 .build();
@@ -34,6 +37,9 @@ public class EventMapper {
         }
         if (eventDtoUpdate.getEndDate() != null) {
             event.setEnd(eventDtoUpdate.getEndDate());
+        }
+        if (eventDtoUpdate.getCategory() != null) {
+            event.setCategory(eventDtoUpdate.getCategory());
         }
         return event;
     }
@@ -58,6 +64,7 @@ public class EventMapper {
                 event.getId(),
                 event.getName(),
                 event.getDescription(),
+                event.getCategory(),
                 event.getStart(),
                 event.getEnd(),
                 StageMapper.findAllStageDto(event.getStages())

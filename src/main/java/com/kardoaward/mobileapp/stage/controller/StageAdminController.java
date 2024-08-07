@@ -1,9 +1,9 @@
 package com.kardoaward.mobileapp.stage.controller;
 
-import com.kardoaward.mobileapp.stage.service.StageService;
 import com.kardoaward.mobileapp.stage.dto.request.CreateStageDtoRequest;
 import com.kardoaward.mobileapp.stage.dto.request.UpdateStageDtoRequest;
-import com.kardoaward.mobileapp.request.dto.response.StageEventDtoResponse;
+import com.kardoaward.mobileapp.stage.dto.response.StageDtoResponse;
+import com.kardoaward.mobileapp.stage.service.StageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,17 +55,17 @@ public class StageAdminController {
     }
 
     @GetMapping
-    public List<StageEventDtoResponse> findAllDto() {
+    public List<StageDtoResponse> findAllDto() {
         log.info("Пришел GET запрос /admin/stage");
-        final List<StageEventDtoResponse> response = stageService.findAllStageDto();
+        final List<StageDtoResponse> response = stageService.findAllStageDto();
         log.info("Отправлен ответ для GET запроса /admin/events/shorts с телом: {}", response);
         return response;
     }
 
     @GetMapping("/{id}")
-    public StageEventDtoResponse findById(@PathVariable @Valid Long id) {
+    public StageDtoResponse findById(@PathVariable @Valid Long id) {
         log.info("Пришел GET запрос /admin/stage/{}", id);
-        final StageEventDtoResponse response = stageService.findByIdStageDto(id);
+        final StageDtoResponse response = stageService.findByIdStageDto(id);
         log.info("Отправлен ответ для GET запроса /admin/events/shorts/{} с телом: {}", id, response);
         return response;
     }

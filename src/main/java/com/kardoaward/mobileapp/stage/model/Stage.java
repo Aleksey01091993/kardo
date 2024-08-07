@@ -1,7 +1,6 @@
 package com.kardoaward.mobileapp.stage.model;
 
 import com.kardoaward.mobileapp.events.model.Event;
-import com.kardoaward.mobileapp.status.StatusStage;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -28,6 +27,8 @@ public class Stage {
     private LocalDate start;
     @Column(name = "stage_date_end")
     private LocalDate end;
+    @Column(name = "EventDescription")
+    private String description;
     @Column(name = "task")
     private String task;
     @ManyToOne

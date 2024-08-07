@@ -1,14 +1,14 @@
 package com.kardoaward.mobileapp.stage.service.impl;
 
 
-import com.kardoaward.mobileapp.stage.dto.request.CreateStageDtoRequest;
-import com.kardoaward.mobileapp.stage.dto.request.UpdateStageDtoRequest;
-import com.kardoaward.mobileapp.request.dto.response.StageEventDtoResponse;
+import com.kardoaward.mobileapp.events.model.Event;
+import com.kardoaward.mobileapp.events.repository.EventRepository;
 import com.kardoaward.mobileapp.exeption.ConflictError;
 import com.kardoaward.mobileapp.exeption.LocalDateRequestException;
 import com.kardoaward.mobileapp.exeption.NotFoundException;
-import com.kardoaward.mobileapp.events.model.Event;
-import com.kardoaward.mobileapp.events.repository.EventRepository;
+import com.kardoaward.mobileapp.stage.dto.request.CreateStageDtoRequest;
+import com.kardoaward.mobileapp.stage.dto.request.UpdateStageDtoRequest;
+import com.kardoaward.mobileapp.stage.dto.response.StageDtoResponse;
 import com.kardoaward.mobileapp.stage.mapper.StageMapper;
 import com.kardoaward.mobileapp.stage.model.Stage;
 import com.kardoaward.mobileapp.stage.repository.StageRepository;
@@ -60,12 +60,12 @@ public class StageServiceImpl implements StageService {
 
 
     @Override
-    public StageEventDtoResponse findByIdStageDto(Long stageId) {
+    public StageDtoResponse findByIdStageDto(Long stageId) {
         return StageMapper.findStageDto(getStage(stageId));
     }
 
     @Override
-    public List<StageEventDtoResponse> findAllStageDto() {
+    public List<StageDtoResponse> findAllStageDto() {
         return StageMapper.findAllStageDto(stageRepository.findAll());
     }
 

@@ -16,7 +16,7 @@ import java.util.Objects;
 @ToString
 @Entity
 @Builder
-@Table
+@Table(name = "Request")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Request {
@@ -34,6 +34,8 @@ public class Request {
     private String currentStage;
     @Column(name = "current_place")
     private String currentPlace;
+    @Column(name = "current_stage_description")
+    private String currentStageDescription;
     @Enumerated(EnumType.STRING)
     @Column(name = "user_status")
     private UserStatus statusToUser;

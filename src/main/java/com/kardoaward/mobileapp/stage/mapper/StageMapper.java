@@ -1,27 +1,26 @@
 package com.kardoaward.mobileapp.stage.mapper;
 
 import com.kardoaward.mobileapp.events.model.Event;
-import com.kardoaward.mobileapp.request.dto.response.StageEventDtoResponse;
 import com.kardoaward.mobileapp.stage.dto.request.CreateStageDtoRequest;
 import com.kardoaward.mobileapp.stage.dto.request.UpdateStageDtoRequest;
+import com.kardoaward.mobileapp.stage.dto.response.StageDtoResponse;
 import com.kardoaward.mobileapp.stage.model.Stage;
-import com.kardoaward.mobileapp.status.StatusStage;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public class StageMapper {
 
-    public static List<StageEventDtoResponse> findAllStageDto(List<Stage> stages) {
+    public static List<StageDtoResponse> findAllStageDto(List<Stage> stages) {
         return stages.stream()
                 .map(StageMapper::findStageDto)
                 .toList();
     }
 
-    public static StageEventDtoResponse findStageDto(Stage stage) {
-        return new StageEventDtoResponse(
+    public static StageDtoResponse findStageDto(Stage stage) {
+        return new StageDtoResponse(
                 stage.getId(),
-                stage.getStart().isAfter(LocalDate.now()) ? StatusStage.COMPLETED : StatusStage.IN_PROGRESS,
+                stage.getEnd().isBefore(LocalDate.now()) ? "Завершон" : "В процессе",
                 stage.getName(),
                 stage.getStart(),
                 stage.getEnd(),

@@ -1,4 +1,4 @@
-package com.kardoaward.mobileapp.request.service;
+package com.kardoaward.mobileapp.request.service.impl;
 
 import com.kardoaward.mobileapp.events.model.Event;
 import com.kardoaward.mobileapp.events.repository.EventRepository;
@@ -9,12 +9,14 @@ import com.kardoaward.mobileapp.exeption.NullRequestException;
 import com.kardoaward.mobileapp.request.dto.request.StatusAdminToRequest;
 import com.kardoaward.mobileapp.request.dto.request.StatusUserToRequest;
 import com.kardoaward.mobileapp.request.dto.request.UpdateRequestStage;
+import com.kardoaward.mobileapp.request.dto.response.RequestDetailsDtoResponse;
+import com.kardoaward.mobileapp.request.dto.response.RequestStageShortDtoResponse;
 import com.kardoaward.mobileapp.request.mapper.RequestMapper;
 import com.kardoaward.mobileapp.request.model.Request;
 import com.kardoaward.mobileapp.request.model.RequestStage;
 import com.kardoaward.mobileapp.request.repository.RequestRepository;
 import com.kardoaward.mobileapp.request.repository.RequestStageRepository;
-import com.kardoaward.mobileapp.stage.model.Stage;
+import com.kardoaward.mobileapp.request.service.RequestService;
 import com.kardoaward.mobileapp.status.AdminEventStatus;
 import com.kardoaward.mobileapp.status.UserStatus;
 import com.kardoaward.mobileapp.user.model.User;
@@ -29,14 +31,15 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class RequestServiceImpl {
+public class RequestServiceImpl implements RequestService {
 
     private final RequestRepository requestRepository;
     private final RequestStageRepository requestStageRepository;
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
 
-    
+
+    @Override
     @Transactional
     public void addRequest(final Long userId, final Long eventId, final StatusUserToRequest dto) {
         Request isRequest = requestRepository.findByRequester_IdAndEvent_Id(userId, eventId).orElse(null);
@@ -50,7 +53,7 @@ public class RequestServiceImpl {
         requestRepository.save(RequestMapper.mapAdd(findByUserId(userId), event, isAddUserStatus(dto.getStatus())));
     }
 
-
+    @Override
     @Transactional
     public void updateStatus(final Long requestId, final StatusAdminToRequest dto) {
         Request request = findByRequestId(requestId);
@@ -78,6 +81,7 @@ public class RequestServiceImpl {
         }
     }
 
+    @Override
     @Transactional
     public void updateRequestAndStage(final Long stageId, final Long requestId, final UpdateRequestStage dto) {
         RequestStage request = requestStageRepository.findByStage_IdAndRequest_Id(stageId, requestId)
@@ -89,27 +93,26 @@ public class RequestServiceImpl {
         requestRepository.save(RequestMapper.mapUpdateRequest(requestStage));
     }
 
-    
-    public List<RequestResponse> findAll() {
-        return RequestMapper.mapAll(requestRepository.findAll());
+    @Override
+    public List<RequestStageShortDtoResponse> findAllShortsActive(Long requesterId) {
+        return RequestMapper.mapShotsAllDto(requestRepository
+                .findAllByRequester_IdAndStatusToUserInAndEvent_EndAfter(
+                        requesterId, List.of(UserStatus.PARTICIPANT, UserStatus.PASSED, UserStatus.VISITOR), LocalDate.now())
+        );
     }
 
-    
-    public List<RequestResponse> findAllUserStatus(final StatusUserToRequest dto) {
-        return RequestMapper.mapAll(requestRepository.findAllByStatusToUser(RequestMapper.isStatus(dto)));
+    @Override
+    public List<RequestStageShortDtoResponse> findAllShortsNotActive(Long requesterId) {
+        return RequestMapper.mapShotsAllDto(requestRepository
+                .findAllByRequester_IdAndStatusToUserOrEvent_EndBefore(
+                        requesterId, UserStatus.RETIRED, LocalDate.now())
+        );
     }
 
-    
-    public List<RequestResponse> findAllAdminStatus(final StatusAdminToRequest dto) {
-        return RequestMapper.mapAll(requestRepository.findAllByStatus(RequestMapper.isAdmin(dto)));
+    @Override
+    public RequestDetailsDtoResponse findByDetails(Long requestId) {
+        return RequestMapper.mapDetailsDto(findByRequestId(requestId));
     }
-
-    
-    public RequestResponse findById(final Long requestId) {
-        return RequestMapper.mapBy(findByRequestId(requestId));
-    }
-
-
 
     private Request findByRequestId(final Long requestId) {
         return requestRepository.findById(requestId)

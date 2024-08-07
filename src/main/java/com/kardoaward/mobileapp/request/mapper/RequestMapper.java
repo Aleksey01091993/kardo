@@ -3,10 +3,11 @@ package com.kardoaward.mobileapp.request.mapper;
 import com.kardoaward.mobileapp.events.model.Event;
 import com.kardoaward.mobileapp.exeption.ConflictError;
 import com.kardoaward.mobileapp.request.dto.request.UpdateRequestStage;
-import com.kardoaward.mobileapp.request.dto.response.*;
+import com.kardoaward.mobileapp.request.dto.response.RequestDetailsDtoResponse;
+import com.kardoaward.mobileapp.request.dto.response.RequestStageDtoResponse;
+import com.kardoaward.mobileapp.request.dto.response.RequestStageShortDtoResponse;
 import com.kardoaward.mobileapp.request.model.Request;
 import com.kardoaward.mobileapp.request.model.RequestStage;
-import com.kardoaward.mobileapp.request.dto.response.StageEventDtoResponse;
 import com.kardoaward.mobileapp.stage.model.Stage;
 import com.kardoaward.mobileapp.status.AdminEventStatus;
 import com.kardoaward.mobileapp.status.UserStatus;
@@ -36,6 +37,7 @@ public class RequestMapper {
         request.setStatusToUser(requestStage.getStatus());
         request.setCurrentStage(requestStage.getStage().getName());
         request.setCurrentPlace(requestStage.getResult());
+        request.setCurrentStageDescription(requestStage.getStage().getDescription());
         return request;
     }
 
@@ -89,29 +91,31 @@ public class RequestMapper {
                 request.getId(),
                 request.getStatusToUser(),
                 request.getEvent().getCategory(),
-                request.getCurrentStage(),
+                request.getCurrentPlace() != null ? request.getCurrentPlace().equalsIgnoreCase("пройдено")
+                        ? request.getCurrentStage() + "(пройдно)" : request.getCurrentStage() + "(" + request.getCurrentPlace() + " место)"
+                        : request.getCurrentStage(),
                 100 / request.getRequestsStages().size() * request.getRequestsStages().stream()
                         .filter(o1 -> (o1.getStatus() == UserStatus.PARTICIPANT && o1.getResult().equalsIgnoreCase("пройдено"))
                                 || o1.getStatus() == UserStatus.PASSED)
                         .toList().size() + "%",
                 request.getEvent().getDescription(),
+                request.getCurrentStageDescription(),
                 mapAllStageEventDto(request.getRequestsStages())
         );
     }
 
-    public static List<StageEventDtoResponse> mapAllStageEventDto(List<RequestStage> requests) {
+    public static List<RequestStageDtoResponse> mapAllStageEventDto(List<RequestStage> requests) {
         return requests.stream().map(RequestMapper::mapStageEventDto).toList();
     }
 
-    public static StageEventDtoResponse mapStageEventDto(RequestStage stage) {
-        return new StageEventDtoResponse(
+    public static RequestStageDtoResponse mapStageEventDto(RequestStage stage) {
+        return new RequestStageDtoResponse(
                 stage.getId(),
                 stage.getStage().getEnd().isBefore(LocalDate.now()) ? "Завершон" : "В процессе",
                 stage.getStage().getName(),
                 stage.getStage().getStart(),
                 stage.getStage().getEnd(),
-                stage.getStatus(),
-                stage.getResult()
+                stage.getStatus(), stage.getResult(), stage.getStage().getTask()
         );
     }
 }

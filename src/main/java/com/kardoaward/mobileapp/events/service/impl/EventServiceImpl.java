@@ -37,9 +37,9 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Transactional
-    public void update(UpdateEventDtoRequest eventDto) {
-        isUpdate(eventDto);
-        eventRepository.save(EventMapper.update(eventDto, findById(eventDto.getId())));
+    public void update(UpdateEventDtoRequest eventDto, Long eventId) {
+        isUpdate(eventDto, eventId);
+        eventRepository.save(EventMapper.update(eventDto, findById(eventId)));
     }
 
     @Override
@@ -75,10 +75,10 @@ public class EventServiceImpl implements EventService {
         );
     }
 
-    private void isUpdate(final UpdateEventDtoRequest updateEvent) {
+    private void isUpdate(final UpdateEventDtoRequest updateEvent, Long eventId) {
         isDate(updateEvent.getEndDate(), updateEvent.getStartDate());
         if (!stageRepository.findByEvent_IdAndStartBeforeOrEndAfter
-                (updateEvent.getId(), updateEvent.getStartDate(), updateEvent.getEndDate()).isEmpty()) {
+                (eventId, updateEvent.getStartDate(), updateEvent.getEndDate()).isEmpty()) {
             throw new LocalDateRequestException("The time of the event goes beyond the time frame of the stages");
         }
     }

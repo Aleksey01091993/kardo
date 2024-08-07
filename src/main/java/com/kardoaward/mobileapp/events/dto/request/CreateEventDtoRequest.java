@@ -19,6 +19,8 @@ public class CreateEventDtoRequest {
     private String name;
     @NotBlank
     private String description;
+    @NotBlank
+    private String category;
     @FutureOrPresent
     private LocalDate startDate;
     @FutureOrPresent

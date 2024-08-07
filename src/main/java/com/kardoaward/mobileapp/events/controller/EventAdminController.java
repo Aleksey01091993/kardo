@@ -29,16 +29,16 @@ public class EventAdminController {
         log.info("Отправлен статус 201 без тела");
     }
 
-    @PatchMapping
-    public void update(@RequestBody @Valid UpdateEventDtoRequest eventDto) {
+    @PatchMapping("{eventId}")
+    public void update(@RequestBody @Valid UpdateEventDtoRequest eventDto, @PathVariable Long eventId) {
         log.info("Пришел PATH запрос /admin/events с телом: {}", eventDto);
-        eventService.update(eventDto);
+        eventService.update(eventDto, eventId);
         log.info("Отправлен статус 200 без тела");
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable @Valid Long id) {
+    public void delete(@PathVariable Long id) {
         log.info("Пришел DELETE запрос /admin/events/{}", id);
         eventService.delete(id);
         log.info("Отправлен статус 204 без тела");
