@@ -2,10 +2,10 @@ package com.kardoaward.mobileapp.request.service.impl;
 
 import com.kardoaward.mobileapp.events.model.Event;
 import com.kardoaward.mobileapp.events.repository.EventRepository;
-import com.kardoaward.mobileapp.exeption.ConflictError;
-import com.kardoaward.mobileapp.exeption.LocalDateRequestException;
-import com.kardoaward.mobileapp.exeption.NotFoundException;
-import com.kardoaward.mobileapp.exeption.NullRequestException;
+import com.kardoaward.mobileapp.exceptions.ConflictError;
+import com.kardoaward.mobileapp.exceptions.LocalDateRequestException;
+import com.kardoaward.mobileapp.exceptions.NotFoundException;
+import com.kardoaward.mobileapp.exceptions.NullRequestException;
 import com.kardoaward.mobileapp.request.dto.request.StatusAdminToRequest;
 import com.kardoaward.mobileapp.request.dto.request.StatusUserToRequest;
 import com.kardoaward.mobileapp.request.dto.request.UpdateRequestStage;

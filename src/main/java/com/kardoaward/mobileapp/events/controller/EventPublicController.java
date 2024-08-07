@@ -4,6 +4,8 @@ package com.kardoaward.mobileapp.events.controller;
 import com.kardoaward.mobileapp.events.dto.response.EventNameDtoResponse;
 import com.kardoaward.mobileapp.events.dto.response.EventToEpicDtoResponse;
 import com.kardoaward.mobileapp.events.service.EventService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Tag(name = "Публичные события.", description = "Возвращает события для главной страницы, не участвует в личном кабинете.")
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -20,6 +23,10 @@ public class EventPublicController {
 
     private final EventService eventService;
 
+    @Operation(
+            summary = "Вернуть короткое событие.",
+            description = "Для главной страницы."
+    )
     @GetMapping("/nameAll")
     public List<EventNameDtoResponse> findAllName() {
         log.info("Пришел GET запрос /public/events/nameAll");
@@ -28,6 +35,10 @@ public class EventPublicController {
         return response;
     }
 
+    @Operation(
+            summary = "Вернуть событие.",
+            description = "Возвращает событие со всеми подзадачами."
+    )
     @GetMapping("/all")
     public List<EventToEpicDtoResponse> findAllToEpic() {
         log.info("Пришел GET запрос /public/events/all");

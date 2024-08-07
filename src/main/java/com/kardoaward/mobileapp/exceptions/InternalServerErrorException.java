@@ -1,4 +1,4 @@
-package com.kardoaward.mobileapp.exeption;
+package com.kardoaward.mobileapp.exceptions;
 
 public class InternalServerErrorException extends RuntimeException {
     public InternalServerErrorException(String message) {

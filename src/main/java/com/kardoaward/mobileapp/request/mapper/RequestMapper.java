@@ -1,7 +1,7 @@
 package com.kardoaward.mobileapp.request.mapper;
 
 import com.kardoaward.mobileapp.events.model.Event;
-import com.kardoaward.mobileapp.exeption.ConflictError;
+import com.kardoaward.mobileapp.exceptions.ConflictError;
 import com.kardoaward.mobileapp.request.dto.request.UpdateRequestStage;
 import com.kardoaward.mobileapp.request.dto.response.RequestDetailsDtoResponse;
 import com.kardoaward.mobileapp.request.dto.response.RequestStageDtoResponse;

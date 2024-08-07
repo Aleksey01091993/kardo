@@ -3,9 +3,9 @@ package com.kardoaward.mobileapp.stage.service.impl;
 
 import com.kardoaward.mobileapp.events.model.Event;
 import com.kardoaward.mobileapp.events.repository.EventRepository;
-import com.kardoaward.mobileapp.exeption.ConflictError;
-import com.kardoaward.mobileapp.exeption.LocalDateRequestException;
-import com.kardoaward.mobileapp.exeption.NotFoundException;
+import com.kardoaward.mobileapp.exceptions.ConflictError;
+import com.kardoaward.mobileapp.exceptions.LocalDateRequestException;
+import com.kardoaward.mobileapp.exceptions.NotFoundException;
 import com.kardoaward.mobileapp.stage.dto.request.CreateStageDtoRequest;
 import com.kardoaward.mobileapp.stage.dto.request.UpdateStageDtoRequest;
 import com.kardoaward.mobileapp.stage.dto.response.StageDtoResponse;
