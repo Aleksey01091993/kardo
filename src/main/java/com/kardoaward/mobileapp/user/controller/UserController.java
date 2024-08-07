@@ -1,61 +1,61 @@
 package com.kardoaward.mobileapp.user.controller;
 
-import com.kardoaward.mobileapp.config.JwtCore;
-import com.kardoaward.mobileapp.config.SecurityConfigurator;
 import com.kardoaward.mobileapp.user.model.User;
 import com.kardoaward.mobileapp.user.service.UserService;
-import lombok.Getter;
+import com.kardoaward.mobileapp.video.model.Video;
+import com.kardoaward.mobileapp.video.service.VideoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
+@Tag(name = "Пользователи", description = "Взаимодействие с пользователем")
 public class UserController {
 
     private final UserService userService;
-    private final AuthenticationManager authenticationManager;
-    private final SecurityConfigurator securityConfigurator;
-    private final JwtCore jwtCore;
+    private final VideoService videoService;
 
-    @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
-    public User register(@RequestBody User user) {
-        user.setPassword(securityConfigurator.passwordEncoder().encode(user.getPassword()));
-        return userService.create(user);
-    }
-
-    @PostMapping("/login")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> login(@RequestBody User user) {
-        Authentication authentication = null;
-        try {
-            authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
-            authenticationManager.authenticate(authentication);
-        } catch (BadCredentialsException e) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtCore.generateToken(authentication);
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
-    }
 
     @GetMapping("/user/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Получение пользователя по id")
     public User getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
-}
 
+    @PatchMapping("/user/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Обновление данных о пользователе")
+    public User updateUser(@PathVariable Long id, @RequestBody User user) {
+        return userService.update(id, user);
+    }
 
-record AuthenticationResponse(String token) {
-}
+    @PostMapping("/user/{id}/upload")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Загрузка видео пользователем")
+    public void uploadVideo(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+        videoService.uploadVideo(id, file);
+    }
+
+    @GetMapping("/user/{id}/videos")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Получение всех видео от пользователя")
+    public List<Video> getVideosByUser(@PathVariable Long id) {
+        return videoService.getAllVideosByUserId(id);
+    }
+
+    @GetMapping("/user/{userId}/videos/{videoId}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Получение видео пользователя по id видео")
+    public Video getVideoById(@PathVariable Long userId, @PathVariable Long videoId) {
+        return videoService.getVideoByIdAndUserId(userId, videoId);
+    }
+}  

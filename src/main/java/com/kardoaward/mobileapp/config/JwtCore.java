@@ -23,13 +23,16 @@ public class JwtCore {
 
     public String generateToken(Authentication auth) {
         UserDetailsImpl userDetails = UserDetailsImpl.build(userService.findByEmail((String) auth.getPrincipal()));
-        return Jwts.builder().setSubject(userDetails.getUsername()).setIssuedAt(new Date())
+        return Jwts.builder()
+                .setSubject(userDetails.getUser().getId().toString())
+                .setAudience(userDetails.getUsername())
+                .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + lifetime))
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
 
     public String getNameFromJwtToken(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getAudience();
     }
 }
