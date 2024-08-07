@@ -10,7 +10,9 @@ public interface UserService extends UserDetailsService {
 
     User create(UserShortDto userShortDto);
 
-    User getUserById(long id);
+    User getUser();
 
-    User update(long id, User user);
+    User update(User user);
+
+    public User getUserByAuthentication();
 }

@@ -24,25 +24,26 @@ public class UserController {
     private final VideoService videoService;
 
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/user")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Получение пользователя по id")
-    public User getUserById(@PathVariable Long id) {
-        return userService.getUserById(id);
+    public User getUser() {
+        return userService.getUser();
     }
 
-    @PatchMapping("/user/{id}")
+    @PatchMapping("/user")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Обновление данных о пользователе")
-    public User updateUser(@PathVariable Long id, @RequestBody User user) {
-        return userService.update(id, user);
+    public User updateUser(@RequestBody User user) {
+        return userService.update(user);
     }
 
     @PostMapping("/user/{id}/upload")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Загрузка видео пользователем")
-    public void uploadVideo(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
-        videoService.uploadVideo(id, file);
+    public void uploadVideo(@PathVariable Long id, @RequestParam("file") MultipartFile file,
+                            @RequestParam("title") String title) {
+        videoService.uploadVideo(file, title);
     }
 
     @GetMapping("/user/{id}/videos")
