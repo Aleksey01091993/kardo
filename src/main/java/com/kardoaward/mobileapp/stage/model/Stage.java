@@ -1,49 +1,39 @@
-package com.kardoaward.mobileapp.events.model;
+package com.kardoaward.mobileapp.stage.model;
 
-import com.kardoaward.mobileapp.epic.model.Epic;
-import com.kardoaward.mobileapp.request.model.Request;
-import com.kardoaward.mobileapp.stage.model.Stage;
+import com.kardoaward.mobileapp.events.model.Event;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
 
 @Getter
 @Setter
 @ToString
+@RequiredArgsConstructor
 @Entity
 @Builder
-@Table(name = "events")
+@Table(name = "stages")
 @AllArgsConstructor
-@NoArgsConstructor
-public class Event {
+public class Stage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     @Column(name = "name")
     private String name;
+    @Column(name = "stage_date_start")
+    private LocalDate start;
+    @Column(name = "stage_date_end")
+    private LocalDate end;
     @Column(name = "EventDescription")
     private String description;
-    @Column(name = "category")
-    private String category;
-    @Column(name = "event_date_start")
-    private LocalDate start;
-    @Column(name = "event_date_end")
-    private LocalDate end;
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<Stage> stages;
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<Epic> epics;
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<Request> requests;
-
+    @Column(name = "task")
+    private String task;
+    @ManyToOne
+    @JoinColumn(name = "event_id", referencedColumnName = "id")
+    private Event event;
 
     @Override
     public final boolean equals(Object o) {
@@ -52,8 +42,8 @@ public class Event {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Event event = (Event) o;
-        return getId() != null && Objects.equals(getId(), event.getId());
+        Stage stage = (Stage) o;
+        return getId() != null && Objects.equals(getId(), stage.getId());
     }
 
     @Override

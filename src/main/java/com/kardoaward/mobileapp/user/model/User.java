@@ -1,5 +1,6 @@
 package com.kardoaward.mobileapp.user.model;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
