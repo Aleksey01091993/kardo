@@ -33,20 +33,27 @@ public class VideoServiceImpl implements VideoService {
     public void uploadVideo(MultipartFile file, String title) {
         long userId = userService.getUserByAuthentication().getId();
         log.info("Uploading video by user {}", userId);
+
         byte[] data;
         Path path;
+
         try {
-            path = Files.createFile(
-                    Path.of(System.getProperty("user.dir") + File.separator + file.getOriginalFilename()));
+            String videoDirectory = "/app/videos";
+
+            path = Files.createFile(Path.of(videoDirectory + File.separator + file.getOriginalFilename()));
+
             data = file.getBytes();
+
             Files.write(path, data);
         } catch (IOException e) {
             throw new FailedToUploadVideoException("Не удалось загрузить видео");
         }
+        String videoUrl = "http://51.250.32.130:8080/videos/" + file.getOriginalFilename();
+
         Video video = new Video();
         video.setTitle(title);
         video.setUser(userService.getUser());
-        video.setVideoPath(path.toString());
+        video.setVideoPath(videoUrl);
         videoRepository.save(video);
     }
 

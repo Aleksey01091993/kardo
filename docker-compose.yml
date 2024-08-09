@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   kardo-db:
     image: postgres:14-alpine
@@ -23,5 +24,7 @@ services:
       - DB_NAME=kardo
       - POSTGRES_USER=kardoadmin
       - POSTGRES_PASSWORD=thisiskardoadmin
-      - DB_HOST=127.0.0.1
+      - DB_HOST=kardo-db
       - DB_PORT=5432
+    volumes:
+      - /home/workshop/mobileapp/kardo-mobile-app:/app/videos
