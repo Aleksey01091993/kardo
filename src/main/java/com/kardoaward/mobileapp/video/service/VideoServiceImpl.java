@@ -48,12 +48,11 @@ public class VideoServiceImpl implements VideoService {
         } catch (IOException e) {
             throw new FailedToUploadVideoException("Не удалось загрузить видео");
         }
-        String videoUrl = "http://51.250.32.130:8080/videos/" + file.getOriginalFilename();
 
         Video video = new Video();
         video.setTitle(title);
         video.setUser(userService.getUser());
-        video.setVideoPath(videoUrl);
+        video.setVideoPath(file.getOriginalFilename());
         videoRepository.save(video);
     }
 
