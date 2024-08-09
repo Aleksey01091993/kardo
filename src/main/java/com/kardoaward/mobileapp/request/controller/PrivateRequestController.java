@@ -29,11 +29,11 @@ public class PrivateRequestController {
             summary = "Подать заявку на участие.",
             description = "visitor - зритель\nparticipant - участник"
     )
-    @PatchMapping("/user/{userId}/event/{eventId}")
+    @PostMapping("/user/{userId}/event/{eventId}")
     public void addRequest(@PathVariable @Parameter(description = "ID участника.") Long userId,
                            @PathVariable @Parameter(description = "ID события.") Long eventId,
                            @RequestBody @Valid @Parameter(description = "сущность заявки.") StatusUserToRequest dto) {
-        log.info("Пришел PATCH запрос requests/user/{}/event/{}: с телом: {}", userId, eventId, dto);
+        log.info("Пришел POST запрос requests/user/{}/event/{}: с телом: {}", userId, eventId, dto);
         requestService.addRequest(userId, eventId, dto);
         log.info("Отправлен статус 200 без тела");
 
