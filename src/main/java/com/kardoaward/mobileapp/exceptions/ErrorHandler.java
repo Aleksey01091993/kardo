@@ -47,6 +47,20 @@ public class ErrorHandler {
                 .timestamp(LocalDateTime.now())
                 .build();
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleAuthException(AuthException e) {
+        log.error("Auth exception caught: {}", e.getMessage());
+        return ApiError.builder()
+                .message(e.getMessage())
+                .reason("Ошибка авторизации")
+                .status(HttpStatus.BAD_REQUEST.toString())
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse badRequest(final NullRequestException e) {

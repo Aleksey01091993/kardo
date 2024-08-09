@@ -29,7 +29,7 @@ public class PrivateRequestController {
             summary = "Подать заявку на участие.",
             description = "visitor - зритель\nparticipant - участник"
     )
-    @PostMapping("/user/{userId}/event/{eventId}")
+    @PostMapping("/event/{eventId}")
     public void addRequest(@PathVariable @Parameter(description = "ID участника.") Long userId,
                            @PathVariable @Parameter(description = "ID события.") Long eventId,
                            @RequestBody @Valid @Parameter(description = "сущность заявки.") StatusUserToRequest dto) {

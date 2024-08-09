@@ -1,7 +1,9 @@
 package com.kardoaward.mobileapp.video.service;
 
+import com.kardoaward.mobileapp.exceptions.AuthException;
 import com.kardoaward.mobileapp.exceptions.FailedToUploadVideoException;
 import com.kardoaward.mobileapp.exceptions.NotFoundException;
+import com.kardoaward.mobileapp.user.model.UserRoles;
 import com.kardoaward.mobileapp.user.service.UserService;
 import com.kardoaward.mobileapp.video.model.Video;
 import com.kardoaward.mobileapp.video.repository.VideoRepository;
@@ -24,7 +26,6 @@ public class VideoServiceImpl implements VideoService {
 
     private final VideoRepository videoRepository;
     private final UserService userService;
-    private final List<String> extensions = List.of("avi", "mp4", "mov", "flv", "mkv");
 
     @Override
     @Transactional
@@ -34,11 +35,8 @@ public class VideoServiceImpl implements VideoService {
         byte[] data;
         Path path;
         try {
-            if (!extensions.contains(FilenameUtils.getExtension(file.getOriginalFilename()))) {
-                throw new FailedToUploadVideoException("Неверный формат файла");
-            }
             path = Files.createFile(
-                    Path.of("/home/workshop/mobileapp/kardo-mobile-app/videos/" + file.getOriginalFilename()));
+                    Path.of(System.getProperty("user.dir") + "/videos/" + file.getOriginalFilename()));
             data = file.getBytes();
             Files.write(path, data);
         } catch (IOException e) {
@@ -52,13 +50,15 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public List<Video> getAllVideosByUserId(Long userId) {
+    public List<Video> getAllVideosByUserId() {
+        long userId = userService.getUserByAuthentication().getId();
         log.info("Getting all videos by user with id {}", userId);
         return videoRepository.findAllByUserId(userId);
     }
 
     @Override
-    public Video getVideoByIdAndUserId(Long userId, Long id) {
+    public Video getVideoByIdAndUserId(Long id) {
+        long userId = userService.getUserByAuthentication().getId();
         return videoRepository.findByUserIdAndId(userId, id).
                 orElseThrow(() -> new NotFoundException("Видео с таким id не найдено"));
     }

@@ -1,6 +1,7 @@
 package com.kardoaward.mobileapp.user.service;
 
 import com.kardoaward.mobileapp.config.UserDetailsImpl;
+import com.kardoaward.mobileapp.exceptions.AuthException;
 import com.kardoaward.mobileapp.exceptions.NotFoundException;
 import com.kardoaward.mobileapp.exceptions.UserAlreadyExistsException;
 import com.kardoaward.mobileapp.user.dto.UserShortDto;
@@ -43,6 +44,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User create(UserShortDto userShortDto) {
         log.info("Creating user: {}", userShortDto);
+        if (userRepository.findByEmail(userShortDto.getEmail()).isPresent()) {
+            throw new AuthException("Пользователь с таким email уже зарегистрирован");
+        }
         User user = UserMapper.fromUserShortDto(userShortDto);
         if (Objects.equals(user.getEmail(), "admin@test.ru")) {
             user.setRole(UserRoles.ROLE_ADMIN);
