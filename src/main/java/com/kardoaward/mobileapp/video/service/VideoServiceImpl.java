@@ -14,6 +14,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,7 +37,7 @@ public class VideoServiceImpl implements VideoService {
         Path path;
         try {
             path = Files.createFile(
-                    Path.of(System.getProperty("user.dir") + "/videos/" + file.getOriginalFilename()));
+                    Path.of(System.getProperty("user.dir") + File.separator + file.getOriginalFilename()));
             data = file.getBytes();
             Files.write(path, data);
         } catch (IOException e) {
