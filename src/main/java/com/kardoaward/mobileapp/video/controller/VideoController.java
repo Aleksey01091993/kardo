@@ -31,7 +31,8 @@ public class VideoController {
             if (file.exists() || file.isReadable()) {
                 return ResponseEntity.ok()
                         .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+                        .header(HttpHeaders.CONTENT_DISPOSITION,
+                                "inline; filename=\"" + file.getFilename() + "\"")
                         .body(file);
             } else {
                 return ResponseEntity.notFound().build();
