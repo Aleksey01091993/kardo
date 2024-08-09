@@ -47,7 +47,6 @@ public class ErrorHandler {
                 .timestamp(LocalDateTime.now())
                 .build();
     }
-
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse badRequest(final NullRequestException e) {
