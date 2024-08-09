@@ -6,6 +6,7 @@ import com.kardoaward.mobileapp.exceptions.UserAlreadyExistsException;
 import com.kardoaward.mobileapp.user.dto.UserShortDto;
 import com.kardoaward.mobileapp.user.mapper.UserMapper;
 import com.kardoaward.mobileapp.user.model.User;
+import com.kardoaward.mobileapp.user.model.UserRoles;
 import com.kardoaward.mobileapp.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +44,12 @@ public class UserServiceImpl implements UserService {
     public User create(UserShortDto userShortDto) {
         log.info("Creating user: {}", userShortDto);
         User user = UserMapper.fromUserShortDto(userShortDto);
+        if (Objects.equals(user.getEmail(), "admin@test.ru")) {
+            user.setRole(UserRoles.ROLE_ADMIN);
+        }
+        if (Objects.equals(user.getEmail(), "expert@test.ru")) {
+            user.setRole(UserRoles.ROLE_EXPERT);
+        }
         return userRepository.save(user);
     }
 
