@@ -1,6 +1,5 @@
 package com.kardoaward.mobileapp.user.service;
 
-
 import com.kardoaward.mobileapp.config.UserDetailsImpl;
 import com.kardoaward.mobileapp.exceptions.NotFoundException;
 import com.kardoaward.mobileapp.exceptions.UserAlreadyExistsException;
@@ -11,6 +10,7 @@ import com.kardoaward.mobileapp.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -45,18 +45,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(long id) {
-        log.info("Getting user by id: {}", id);
-        return userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Пользователь с таким id не найден."));
+    public User getUser() {
+        User currentUser = getUserByAuthentication();
+        log.info("Getting user by id: {}", currentUser.getId());
+        return currentUser;
     }
 
     @Override
     @Transactional
-    public User update(long id, User user) {
+    public User update(User user) {
         log.info("Updating user: {}", user);
-        User oldUser = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Пользователь с таким id не найден."));
+        User oldUser = getUserByAuthentication();
         if (user.getPassword() != null) {
             oldUser.setPassword(user.getPassword());
         }
@@ -95,5 +94,11 @@ public class UserServiceImpl implements UserService {
             oldUser.setBirthday(user.getBirthday());
         }
         return userRepository.save(oldUser);
+    }
+
+    @Override
+    public User getUserByAuthentication() {
+        UserDetailsImpl udi = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return udi.getUser();
     }
 }

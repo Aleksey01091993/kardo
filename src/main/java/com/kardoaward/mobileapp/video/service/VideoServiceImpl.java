@@ -28,7 +28,8 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     @Transactional
-    public void uploadVideo(Long userId, MultipartFile file) {
+    public void uploadVideo(MultipartFile file, String title) {
+        long userId = userService.getUserByAuthentication().getId();
         log.info("Uploading video by user {}", userId);
         byte[] data;
         Path path;
@@ -45,8 +46,8 @@ public class VideoServiceImpl implements VideoService {
             throw new FailedToUploadVideoException("Не удалось загрузить видео");
         }
         Video video = new Video();
-        video.setTitle(file.getOriginalFilename());
-        video.setUser(userService.getUserById(userId));
+        video.setTitle(title);
+        video.setUser(userService.getUser());
         video.setVideoPath(path.toString());
         videoRepository.save(video);
     }
