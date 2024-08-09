@@ -38,8 +38,7 @@ public class VideoServiceImpl implements VideoService {
                 throw new FailedToUploadVideoException("Неверный формат файла");
             }
             path = Files.createFile(
-                    //TODO: Изменить путь сохранения видео после подключения к серверу.
-                    Path.of("C:\\Users\\Nikita\\dev\\mobileapp\\videos\\" + file.getOriginalFilename()));
+                    Path.of("/home/workshop/mobileapp/kardo-mobile-app/videos/" + file.getOriginalFilename()));
             data = file.getBytes();
             Files.write(path, data);
         } catch (IOException e) {
