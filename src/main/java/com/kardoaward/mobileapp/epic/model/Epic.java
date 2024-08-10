@@ -13,7 +13,7 @@ import java.util.Objects;
 @ToString
 @Entity
 @Builder
-@Table(name = "events")
+@Table(name = "epic")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Epic {
@@ -23,7 +23,7 @@ public class Epic {
     private Long id;
     @Column(name = "name")
     private String name;
-    @Column(name = "EventDescription")
+    @Column(name = "description")
     private String description;
     @ManyToOne(optional = false)
     @JoinColumn(name = "event_id", referencedColumnName = "id")
