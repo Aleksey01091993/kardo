@@ -1,7 +1,6 @@
 package com.kardoaward.mobileapp.request.model;
 
 import com.kardoaward.mobileapp.events.model.Event;
-import com.kardoaward.mobileapp.status.AdminEventStatus;
 import com.kardoaward.mobileapp.status.UserStatus;
 import com.kardoaward.mobileapp.user.model.User;
 import jakarta.persistence.*;
@@ -39,9 +38,6 @@ public class Request {
     @Enumerated(EnumType.STRING)
     @Column(name = "user_status")
     private UserStatus statusToUser;
-    @Enumerated(EnumType.STRING)
-    @Column(name = "admin_status")
-    private AdminEventStatus status;
     @OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<RequestStage> requestsStages;
