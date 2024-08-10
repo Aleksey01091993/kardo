@@ -18,6 +18,6 @@ public class UpdateEventDtoRequest {
     private String name;
     private String description;
     private String category;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private String startDate;
+    private String endDate;
 }
