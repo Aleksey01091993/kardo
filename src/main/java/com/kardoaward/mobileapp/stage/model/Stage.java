@@ -27,7 +27,7 @@ public class Stage {
     private LocalDate start;
     @Column(name = "stage_date_end")
     private LocalDate end;
-    @Column(name = "EventDescription")
+    @Column(name = "description")
     private String description;
     @Column(name = "task")
     private String task;

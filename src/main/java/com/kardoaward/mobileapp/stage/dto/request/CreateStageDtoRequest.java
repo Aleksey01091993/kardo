@@ -21,6 +21,8 @@ import java.time.LocalDate;
 public class CreateStageDtoRequest {
     @NotBlank
     private String name;
+    @NotBlank
+    private String description;
     @FutureOrPresent
     private LocalDate startDate;
     @FutureOrPresent

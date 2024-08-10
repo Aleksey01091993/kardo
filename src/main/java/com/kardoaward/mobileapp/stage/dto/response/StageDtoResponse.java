@@ -10,6 +10,7 @@ public record StageDtoResponse(
         Long id,
         String statusStage,
         String name,
+        String description,
         LocalDate start,
         LocalDate end,
         String task

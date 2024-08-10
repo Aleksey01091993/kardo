@@ -97,7 +97,7 @@ public class RequestMapper {
                 request.getId(),
                 request.getStatusToUser(),
                 request.getEvent().getCategory(),
-                request.getCurrentPlace() != null ? request.getCurrentPlace().equalsIgnoreCase("пройдено")
+                !request.getCurrentPlace().equals("-") ? request.getCurrentPlace().equalsIgnoreCase("пройдено")
                         ? request.getCurrentStage() + "(пройдно)" : request.getCurrentStage() + "(" + request.getCurrentPlace() + " место)"
                         : request.getCurrentStage(),
                 100 / request.getRequestsStages().size() * request.getRequestsStages().stream()

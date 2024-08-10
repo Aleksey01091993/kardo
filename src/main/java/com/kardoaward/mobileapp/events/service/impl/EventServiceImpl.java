@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
@@ -76,9 +77,21 @@ public class EventServiceImpl implements EventService {
     }
 
     private void isUpdate(final UpdateEventDtoRequest updateEvent, Long eventId) {
-        isDate(updateEvent.getEndDate(), updateEvent.getStartDate());
+        if ((updateEvent.getStartDate() == null || updateEvent.getStartDate().isEmpty()) &&
+        (updateEvent.getEndDate() == null || updateEvent.getEndDate().isEmpty())) {
+            return;
+        }
+        DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        Event event = findById(eventId);
+        if (isNullDate(updateEvent.getStartDate())) {
+            event.setStart(LocalDate.parse(updateEvent.getStartDate(), DTF));
+        }
+        if (isNullDate(updateEvent.getEndDate())) {
+            event.setEnd(LocalDate.parse(updateEvent.getEndDate(), DTF));
+        }
+        isDate(event.getEnd(), event.getStart());
         if (!stageRepository.findByEvent_IdAndStartBeforeOrEndAfter
-                (eventId, updateEvent.getStartDate(), updateEvent.getEndDate()).isEmpty()) {
+                (eventId, event.getStart(), event.getEnd()).isEmpty()) {
             throw new LocalDateRequestException("The time of the event goes beyond the time frame of the stages");
         }
     }
@@ -88,6 +101,10 @@ public class EventServiceImpl implements EventService {
             throw new LocalDateRequestException("the start date of the event must be later today," +
                     " the end date of the event must be later than the start date of the event");
         }
+    }
+
+    private Boolean isNullDate(final String date) {
+        return date != null && !date.isEmpty();
     }
 
 }
