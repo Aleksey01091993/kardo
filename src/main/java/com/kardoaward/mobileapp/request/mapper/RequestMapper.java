@@ -9,7 +9,6 @@ import com.kardoaward.mobileapp.request.dto.response.RequestStageShortDtoRespons
 import com.kardoaward.mobileapp.request.model.Request;
 import com.kardoaward.mobileapp.request.model.RequestStage;
 import com.kardoaward.mobileapp.stage.model.Stage;
-import com.kardoaward.mobileapp.status.AdminEventStatus;
 import com.kardoaward.mobileapp.status.UserStatus;
 import com.kardoaward.mobileapp.user.model.User;
 
@@ -19,12 +18,17 @@ import java.util.List;
 
 public class RequestMapper {
 
-    public static Request mapAdd(final User user, final Event event, UserStatus status) {
+    public static Request mapAdd(final User user, final Event event) {
+        Stage stage = event.getStages().stream()
+                .sorted((o1, o2) -> o1.getStart().isBefore(o2.getStart()) ? 1 : -1)
+                .toList().get(0);
         return Request.builder()
                 .requester(user)
                 .event(event)
-                .statusToUser(status)
-                .status(AdminEventStatus.NEW)
+                .statusToUser(UserStatus.PARTICIPANT)
+                .currentStage(stage.getName())
+                .currentPlace("-")
+                .currentStageDescription(stage.getDescription())
                 .build();
     }
 
@@ -45,6 +49,8 @@ public class RequestMapper {
         return RequestStage.builder()
                 .request(request)
                 .stage(stage)
+                .status(UserStatus.PARTICIPANT)
+                .result("-")
                 .build();
     }
 
@@ -60,7 +66,7 @@ public class RequestMapper {
                 }
             }
         }
-        if (dto.getStatus() != null) {
+        if (status != null) {
             stage.setStatus(status);
         }
         return stage;

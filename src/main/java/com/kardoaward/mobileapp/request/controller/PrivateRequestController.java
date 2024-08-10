@@ -1,16 +1,15 @@
 package com.kardoaward.mobileapp.request.controller;
 
 
-import com.kardoaward.mobileapp.request.dto.request.StatusUserToRequest;
 import com.kardoaward.mobileapp.request.dto.response.RequestDetailsDtoResponse;
 import com.kardoaward.mobileapp.request.dto.response.RequestStageShortDtoResponse;
 import com.kardoaward.mobileapp.request.service.RequestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,15 +26,14 @@ public class PrivateRequestController {
 
     @Operation(
             summary = "Подать заявку на участие.",
-            description = "visitor - зритель\nparticipant - участник"
+            description = "становится участником события и всех этапов"
     )
-    @PatchMapping("/user/{userId}/event/{eventId}")
-    public void addRequest(@PathVariable @Parameter(description = "ID участника.") Long userId,
-                           @PathVariable @Parameter(description = "ID события.") Long eventId,
-                           @RequestBody @Valid @Parameter(description = "сущность заявки.") StatusUserToRequest dto) {
-        log.info("Пришел PATCH запрос requests/user/{}/event/{}: с телом: {}", userId, eventId, dto);
-        requestService.addRequest(userId, eventId, dto);
-        log.info("Отправлен статус 200 без тела");
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/event/{eventId}")
+    public void addRequest(@PathVariable @Parameter(description = "ID события.") Long eventId) {
+        log.info("Пришел PATCH запрос requests/event/{}", eventId);
+        requestService.addRequest(eventId);
+        log.info("Отправлен статус 201 без тела");
 
     }
 
