@@ -1,19 +1,23 @@
 package com.kardoaward.mobileapp.user.service;
 
-
 import com.kardoaward.mobileapp.config.UserDetailsImpl;
+import com.kardoaward.mobileapp.exceptions.AuthException;
 import com.kardoaward.mobileapp.exceptions.NotFoundException;
 import com.kardoaward.mobileapp.exceptions.UserAlreadyExistsException;
 import com.kardoaward.mobileapp.user.dto.UserShortDto;
 import com.kardoaward.mobileapp.user.mapper.UserMapper;
 import com.kardoaward.mobileapp.user.model.User;
+import com.kardoaward.mobileapp.user.model.UserRoles;
 import com.kardoaward.mobileapp.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -40,23 +44,31 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User create(UserShortDto userShortDto) {
         log.info("Creating user: {}", userShortDto);
+        if (userRepository.findByEmail(userShortDto.getEmail()).isPresent()) {
+            throw new AuthException("Пользователь с таким email уже зарегистрирован");
+        }
         User user = UserMapper.fromUserShortDto(userShortDto);
+        if (Objects.equals(user.getEmail(), "admin@test.ru")) {
+            user.setRole(UserRoles.ROLE_ADMIN);
+        }
+        if (Objects.equals(user.getEmail(), "expert@test.ru")) {
+            user.setRole(UserRoles.ROLE_EXPERT);
+        }
         return userRepository.save(user);
     }
 
     @Override
-    public User getUserById(long id) {
-        log.info("Getting user by id: {}", id);
-        return userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Пользователь с таким id не найден."));
+    public User getUser() {
+        User currentUser = getUserByAuthentication();
+        log.info("Getting user by id: {}", currentUser.getId());
+        return currentUser;
     }
 
     @Override
     @Transactional
-    public User update(long id, User user) {
+    public User update(User user) {
         log.info("Updating user: {}", user);
-        User oldUser = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Пользователь с таким id не найден."));
+        User oldUser = getUserByAuthentication();
         if (user.getPassword() != null) {
             oldUser.setPassword(user.getPassword());
         }
@@ -95,5 +107,11 @@ public class UserServiceImpl implements UserService {
             oldUser.setBirthday(user.getBirthday());
         }
         return userRepository.save(oldUser);
+    }
+
+    @Override
+    public User getUserByAuthentication() {
+        UserDetailsImpl udi = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return udi.getUser();
     }
 }

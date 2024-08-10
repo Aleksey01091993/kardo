@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface VideoService {
 
-    void uploadVideo(Long userId, MultipartFile file);
+    void uploadVideo(MultipartFile file, String title);
 
-    List<Video> getAllVideosByUserId(Long userId);
+    List<Video> getAllVideosByUserId();
 
-    Video getVideoByIdAndUserId(Long userId, Long id);
+    Video getVideoByIdAndUserId(Long id);
 }

@@ -34,7 +34,6 @@ public class PrivateRequestController {
         log.info("Пришел PATCH запрос requests/event/{}", eventId);
         requestService.addRequest(eventId);
         log.info("Отправлен статус 201 без тела");
-
     }
 
     @Operation(

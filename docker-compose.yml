@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  kardo-db:
+    image: postgres:14-alpine
+    container_name: kardo_db_container
+    ports:
+      - "6541:5432"
+    environment:
+      - POSTGRES_DB=kardo
+      - POSTGRES_USER=kardoadmin
+      - POSTGRES_PASSWORD=thisiskardoadmin
+
+  kardo-app:
+    build: .
+    image: kardo_image
+    container_name: kardo_container
+    ports:
+      - "8080:8080"
+    depends_on:
+      - kardo-db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://kardo-db:5432/kardo
+      - DB_NAME=kardo
+      - POSTGRES_USER=kardoadmin
+      - POSTGRES_PASSWORD=thisiskardoadmin
+      - DB_HOST=kardo-db
+      - DB_PORT=5432
+    volumes:
+      - /home/workshop/mobileapp/kardo-mobile-app:/app/videos
