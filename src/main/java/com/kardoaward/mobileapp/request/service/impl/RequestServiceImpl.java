@@ -4,6 +4,7 @@ import com.kardoaward.mobileapp.config.UserDetailsImpl;
 import com.kardoaward.mobileapp.events.model.Event;
 import com.kardoaward.mobileapp.events.repository.EventRepository;
 import com.kardoaward.mobileapp.exceptions.ConflictError;
+import com.kardoaward.mobileapp.exceptions.NoContent;
 import com.kardoaward.mobileapp.exceptions.NotFoundException;
 import com.kardoaward.mobileapp.exceptions.NullRequestException;
 import com.kardoaward.mobileapp.request.dto.request.UpdateRequestStage;
@@ -40,6 +41,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     @Transactional
     public void addRequest(final Long eventId) {
+        isEvent(eventId);
         Request isRequest = requestRepository.findByRequester_IdAndEvent_Id(getUserId(), eventId).orElse(null);
         if (isRequest != null) {
             throw new ConflictError("the application for current events already exists");
@@ -107,5 +109,9 @@ public class RequestServiceImpl implements RequestService {
 
     private Long getUserId() {
         return ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser().getId();
+    }
+
+    private void isEvent(Long id) {
+        eventRepository.findById(id).orElseThrow(() -> new NoContent("Event with id " + id + " not found"));
     }
 }
