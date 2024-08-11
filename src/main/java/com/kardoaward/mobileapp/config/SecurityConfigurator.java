@@ -61,6 +61,7 @@ public class SecurityConfigurator {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/login").permitAll()
+                        .requestMatchers("/uploadFile", "/uploadMultipleFiles", "/downloadFile/**").permitAll()
                         .requestMatchers("/profile").fullyAuthenticated()
                         .requestMatchers("/user/**").fullyAuthenticated()
                         .requestMatchers("/requests/**").fullyAuthenticated()
