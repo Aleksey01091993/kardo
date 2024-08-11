@@ -59,29 +59,29 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public List<RequestStageShortDtoResponse> findAllShortsActive(Long requesterId) {
+    public List<RequestStageShortDtoResponse> findAllShortsActive() {
         return RequestMapper.mapShotsAllDto(requestRepository
                 .findAllByRequester_IdAndStatusToUserInAndEvent_EndAfter(
-                        requesterId, List.of(UserStatus.PARTICIPANT, UserStatus.PASSED), LocalDate.now())
+                        getUserId(), List.of(UserStatus.PARTICIPANT, UserStatus.PASSED), LocalDate.now())
         );
     }
 
     @Override
-    public List<RequestStageShortDtoResponse> findAllShortsNotActive(Long requesterId) {
+    public List<RequestStageShortDtoResponse> findAllShortsNotActive() {
         return RequestMapper.mapShotsAllDto(requestRepository
                 .findAllByRequester_IdAndStatusToUserOrEvent_EndBefore(
-                        requesterId, UserStatus.RETIRED, LocalDate.now())
+                        getUserId(), UserStatus.RETIRED, LocalDate.now())
         );
     }
 
     @Override
-    public RequestDetailsDtoResponse findByDetails(Long requestId) {
-        return RequestMapper.mapDetailsDto(findByRequestId(requestId));
+    public RequestDetailsDtoResponse findByDetails() {
+        return RequestMapper.mapDetailsDto(findByRequest());
     }
 
-    private Request findByRequestId(final Long requestId) {
-        return requestRepository.findById(requestId)
-                .orElseThrow(() -> new NotFoundException("request not found by id: " + requestId));
+    private Request findByRequest() {
+        return requestRepository.findByRequester_Id(getUserId())
+                .orElseThrow(() -> new NotFoundException("request not found"));
     }
 
     private Event findByEventId(Long id) {

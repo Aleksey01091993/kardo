@@ -13,6 +13,8 @@ import java.util.Optional;
 @Repository
 public interface RequestRepository extends JpaRepository<Request, Long> {
 
+    Optional<Request> findByRequester_Id(Long id);
+
     Optional<Request> findByRequester_IdAndEvent_Id(Long userId, Long eventId);
 
     List<Request> findAllByRequester_IdAndStatusToUserInAndEvent_EndAfter(Long requesterId, List<UserStatus> status, LocalDate end);

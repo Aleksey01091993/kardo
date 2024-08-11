@@ -40,11 +40,11 @@ public class PrivateRequestController {
             summary = "Активные события пользователя",
             description = "Возвращает все активные события."
     )
-    @GetMapping("/active/{requesterId}")
-    public List<RequestStageShortDtoResponse> findAllShortsActive(@PathVariable @Parameter(description = "ID заявки.") Long requesterId) {
-        log.info("Пришел GET запрос requests/active/{}", requesterId);
-        final List<RequestStageShortDtoResponse> response = requestService.findAllShortsActive(requesterId);
-        log.info("Отправлен ответ для GET запроса requests/active/{} с телом: {}", requesterId, response);
+    @GetMapping("/active")
+    public List<RequestStageShortDtoResponse> findAllShortsActive() {
+        log.info("Пришел GET запрос requests/active");
+        final List<RequestStageShortDtoResponse> response = requestService.findAllShortsActive();
+        log.info("Отправлен ответ для GET запроса requests/active с телом: {}", response);
         return response;
     }
 
@@ -52,11 +52,11 @@ public class PrivateRequestController {
             summary = "Завершённые события пользователя",
             description = "Возвращает все завершённые события."
     )
-    @GetMapping("/notActive/{requesterId}")
-    public List<RequestStageShortDtoResponse> findAllShortsNotActive(@PathVariable @Parameter(description = "ID заявки.") Long requesterId) {
-        log.info("Пришел GET запрос requests/notActive/{}", requesterId);
-        final List<RequestStageShortDtoResponse> response = requestService.findAllShortsNotActive(requesterId);
-        log.info("Отправлен ответ для GET запроса requests/notActive/{} с телом: {}", requesterId, response);
+    @GetMapping("/notActive")
+    public List<RequestStageShortDtoResponse> findAllShortsNotActive() {
+        log.info("Пришел GET запрос requests/notActive");
+        final List<RequestStageShortDtoResponse> response = requestService.findAllShortsNotActive();
+        log.info("Отправлен ответ для GET запроса requests/notActive с телом: {}", response);
         return response;
     }
 
@@ -64,11 +64,11 @@ public class PrivateRequestController {
             summary = "События пользователя с этапами.",
             description = "Подробное описание события пользователя с этапами."
     )
-    @GetMapping("/details/{requesterId}")
-    public RequestDetailsDtoResponse findByDetails(@PathVariable @Parameter(description = "ID заявки.") Long requesterId) {
-        log.info("Пришел GET запрос requests/details/{}", requesterId);
-        final RequestDetailsDtoResponse response = requestService.findByDetails(requesterId);
-        log.info("Отправлен ответ для GET запроса requests/details/{} с телом: {}", requesterId, response);
+    @GetMapping("/details")
+    public RequestDetailsDtoResponse findByDetails() {
+        log.info("Пришел GET запрос requests/details");
+        final RequestDetailsDtoResponse response = requestService.findByDetails();
+        log.info("Отправлен ответ для GET запроса requests/details с телом: {}", response);
         return response;
     }
 

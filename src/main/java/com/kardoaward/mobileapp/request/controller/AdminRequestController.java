@@ -5,6 +5,7 @@ import com.kardoaward.mobileapp.request.dto.request.UpdateRequestStage;
 import com.kardoaward.mobileapp.request.service.RequestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +16,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("requests/admin/request")
+@RequestMapping("/admin/requests")
 public class AdminRequestController {
 
     private final RequestService requestService;
+
 
     @Operation(
             summary = "Обновление заявки.",
@@ -26,11 +28,11 @@ public class AdminRequestController {
     )
     @PatchMapping("/{requestId}/stage/{stageId}")
     public void updateRequestAndStage(
-            @PathVariable @Parameter(description = "ID этапа.") Long stageId,
             @PathVariable @Parameter(description = "ID заявки.") Long requestId,
+            @PathVariable @Parameter(description = "ID этапа.") Long stageId,
             @RequestBody @Valid @Parameter(description = "Сущность обновления участника этапа.") UpdateRequestStage dto
     ) {
-        log.info("Пришел PATCH запрос requests/{}/admin/request/{} с телом: {}", requestId, stageId, dto);
+        log.info("Пришел PATCH запрос admin/requests/{}/stage/{} с телом: {}", requestId, stageId, dto);
         requestService.updateRequestAndStage(stageId, requestId, dto);
         log.info("Отправлен статус 200 без тела");
     }
