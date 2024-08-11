@@ -5,16 +5,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.kardoaward.mobileapp.request.model.Request;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
@@ -31,8 +28,7 @@ public class User {
     @Column(name = "first_name")
     private String firstName;
     private String surname;
-    @Column(name = "last_name")
-    private String lastName;
+    private String patronymic;
     @Column(unique = true, nullable = false)
     @Email(message = "Поле email должно быть в форме email@host.domen")
     @Pattern(regexp = "^[a-zA-Z0-9@._-]+$", message = "Email может содержать только латинские буквы")
@@ -46,6 +42,7 @@ public class User {
     private String portfolioUrl;
     private String country;
     private String city;
+    private String region;
     @Enumerated(EnumType.STRING)
     private UserRoles role = UserRoles.ROLE_USER;
     @OneToMany(mappedBy = "requester", cascade = CascadeType.ALL, fetch = FetchType.EAGER)

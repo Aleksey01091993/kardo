@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS users
     password varchar NOT NULL,
     first_name varchar(50),
     surname varchar(50),
-    last_name varchar(50),
+    patronymic varchar(50),
     email varchar(70) NOT NULL unique,
     birthday TIMESTAMP WITHOUT TIME ZONE,
     phone varchar(12),
@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS users
     portfolio_url varchar(255),
     country varchar(40),
     city varchar(40),
+    region varchar (60),
     role varchar(15)
     );
 

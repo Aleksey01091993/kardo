@@ -81,8 +81,8 @@ public class UserServiceImpl implements UserService {
         if (user.getFirstName() != null) {
             oldUser.setFirstName(user.getFirstName());
         }
-        if (user.getLastName() != null) {
-            oldUser.setLastName(user.getLastName());
+        if (user.getPatronymic() != null) {
+            oldUser.setPatronymic(user.getPatronymic());
         }
         if (user.getSurname() != null) {
             oldUser.setSurname(user.getSurname());
@@ -95,6 +95,9 @@ public class UserServiceImpl implements UserService {
         }
         if (user.getCountry() != null) {
             oldUser.setCountry(user.getCountry());
+        }
+        if (user.getRegion() != null) {
+            oldUser.setRegion(user.getRegion());
         }
         if (user.getPortfolioUrl() != null) {
             oldUser.setPortfolioUrl(user.getPortfolioUrl());
