@@ -50,7 +50,7 @@ public class AuthenticationController {
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Авторизация пользователя")
-    public JwtResponse login(@@RequestBody UserShortDto user) {
+    public JwtResponse login(@Valid @RequestBody UserShortDto user) {
         log.info("User login");
         Authentication authentication = null;
         try {
