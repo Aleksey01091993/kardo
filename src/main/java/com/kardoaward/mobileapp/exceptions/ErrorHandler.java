@@ -1,12 +1,16 @@
 package com.kardoaward.mobileapp.exceptions;
 
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @RestControllerAdvice
 @Slf4j
@@ -55,6 +59,42 @@ public class ErrorHandler {
         return ApiError.builder()
                 .message(e.getMessage())
                 .reason("Ошибка авторизации")
+                .status(HttpStatus.BAD_REQUEST.toString())
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleValidationException(MethodArgumentNotValidException e) {
+        log.error("Validation exception caught: {}", Objects.requireNonNull(e.getFieldError()).getDefaultMessage());
+        return ApiError.builder()
+                .message(Objects.requireNonNull(e.getFieldError()).getDefaultMessage())
+                .reason("Ошибка валидации")
+                .status(HttpStatus.BAD_REQUEST.toString())
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleValidationException(ConstraintViolationException e) {
+        log.error("Validation exception caught: {}", e.getConstraintViolations().iterator().next().getMessage());
+        return ApiError.builder()
+                .message(e.getConstraintViolations().iterator().next().getMessage())
+                .reason("Ошибка валидации")
+                .status(HttpStatus.BAD_REQUEST.toString())
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handlerConstraint(final DataIntegrityViolationException e) {
+        log.debug("Получена ошибка валидации 400 {}", e.getMessage());
+        return ApiError.builder()
+                .message(e.getMessage())
+                .reason("Ошибка валидации")
                 .status(HttpStatus.BAD_REQUEST.toString())
                 .timestamp(LocalDateTime.now())
                 .build();

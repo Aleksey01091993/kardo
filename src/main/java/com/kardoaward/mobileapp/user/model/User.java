@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.kardoaward.mobileapp.request.model.Request;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -29,6 +31,7 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
     @Column(unique = true, nullable = false)
+    @Email(message = "Поле email должно быть в форме email@host.domen")
     private String email;
     private LocalDate birthday;
     @Column(unique = true)

@@ -12,6 +12,7 @@ import com.kardoaward.mobileapp.user.service.UserService;
 import io.jsonwebtoken.Jwt;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -40,7 +41,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Регистрация пользователя")
-    public OnRegisterUserDto register(@RequestBody UserShortDto userShortDto) {
+    public OnRegisterUserDto register(@Valid @RequestBody UserShortDto userShortDto) {
         log.info("Registering user");
         userShortDto.setPassword(securityConfigurator.passwordEncoder().encode(userShortDto.getPassword()));
         return UserMapper.toOnRegisterUserDto(userService.create(userShortDto));
@@ -49,7 +50,7 @@ public class AuthenticationController {
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Авторизация пользователя")
-    public JwtResponse login(@RequestBody UserShortDto user) {
+    public JwtResponse login(@@RequestBody UserShortDto user) {
         log.info("User login");
         Authentication authentication = null;
         try {
