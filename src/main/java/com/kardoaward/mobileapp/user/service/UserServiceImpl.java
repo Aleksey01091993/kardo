@@ -2,7 +2,6 @@ package com.kardoaward.mobileapp.user.service;
 
 import com.kardoaward.mobileapp.config.UserDetailsImpl;
 import com.kardoaward.mobileapp.exceptions.AuthException;
-import com.kardoaward.mobileapp.exceptions.NotFoundException;
 import com.kardoaward.mobileapp.exceptions.UserAlreadyExistsException;
 import com.kardoaward.mobileapp.user.dto.UserShortDto;
 import com.kardoaward.mobileapp.user.mapper.UserMapper;

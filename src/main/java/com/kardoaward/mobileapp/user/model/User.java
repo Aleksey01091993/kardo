@@ -6,12 +6,15 @@ import com.kardoaward.mobileapp.request.model.Request;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -32,6 +35,7 @@ public class User {
     private String lastName;
     @Column(unique = true, nullable = false)
     @Email(message = "Поле email должно быть в форме email@host.domen")
+    @Pattern(regexp = "^[a-zA-Z0-9@._-]+$", message = "Email может содержать только латинские буквы")
     private String email;
     private LocalDate birthday;
     @Column(unique = true)
@@ -42,9 +46,9 @@ public class User {
     private String portfolioUrl;
     private String country;
     private String city;
-    @OneToMany(mappedBy = "requester", cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<Request> requests;
     @Enumerated(EnumType.STRING)
     private UserRoles role = UserRoles.ROLE_USER;
+    @OneToMany(mappedBy = "requester", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ToString.Exclude
+    private List<Request> requests;
 }
