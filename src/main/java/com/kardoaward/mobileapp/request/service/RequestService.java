@@ -8,15 +8,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface RequestService {
-    @Transactional
+
     void addRequest(final Long eventId);
 
-    @Transactional
     void updateRequestAndStage(Long stageId, Long requestId, UpdateRequestStage dto);
 
-    List<RequestStageShortDtoResponse> findAllShortsActive(Long requesterId);
+    List<RequestStageShortDtoResponse> findAllShortsActive();
 
-    List<RequestStageShortDtoResponse> findAllShortsNotActive(Long requesterId);
+    List<RequestStageShortDtoResponse> findAllShortsNotActive();
 
-    RequestDetailsDtoResponse findByDetails(Long requestId);
+    RequestDetailsDtoResponse findByDetails();
 }
