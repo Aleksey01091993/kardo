@@ -47,6 +47,9 @@ public class RequestServiceImpl implements RequestService {
             throw new ConflictError("the application for current events already exists");
         }
         Request request = requestRepository.save(RequestMapper.mapAdd(findByUserId(getUserId()), findByEventId(eventId)));
+        if (request.getEvent().getStages().isEmpty()) {
+            throw new NoContent("you cannot apply to invent without stages");
+        }
         requestStageRepository.saveAll(RequestMapper.mapAllStage(request.getEvent().getStages(), request));
 
     }
