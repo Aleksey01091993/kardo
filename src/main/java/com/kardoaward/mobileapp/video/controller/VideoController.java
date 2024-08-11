@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 
@@ -30,7 +31,7 @@ public class VideoController {
 
             if (file.exists() || file.isReadable()) {
                 return ResponseEntity.ok()
-                        .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                        .contentType(MediaType.parseMediaType("video/quicktime"))
                         .header(HttpHeaders.CONTENT_DISPOSITION,
                                 "inline; filename=\"" + file.getFilename() + "\"")
                         .body(file);
