@@ -1,5 +1,7 @@
 package com.kardoaward.mobileapp.user.controller;
 
+import com.kardoaward.mobileapp.user.dto.UserDto;
+import com.kardoaward.mobileapp.user.mapper.UserMapper;
 import com.kardoaward.mobileapp.user.model.User;
 import com.kardoaward.mobileapp.user.service.UserService;
 import com.kardoaward.mobileapp.video.model.Video;
@@ -26,16 +28,16 @@ public class UserController {
 
     @GetMapping("/user")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Получение пользователя по id")
-    public User getUser() {
-        return userService.getUser();
+    @Operation(summary = "Получение данных пользователя")
+    public UserDto getUser() {
+        return UserMapper.toUserDto(userService.getUser());
     }
 
     @PatchMapping("/user")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Обновление данных о пользователе")
-    public User updateUser(@RequestBody User user) {
-        return userService.update(user);
+    public UserDto updateUser(@RequestBody User user) {
+        return UserMapper.toUserDto(userService.update(user));
     }
 
     @PostMapping("/user/upload")
