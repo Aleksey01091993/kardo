@@ -2,9 +2,14 @@ package com.kardoaward.mobileapp.user.controller;
 
 import com.kardoaward.mobileapp.config.JwtCore;
 import com.kardoaward.mobileapp.config.SecurityConfigurator;
+import com.kardoaward.mobileapp.exceptions.AuthException;
+import com.kardoaward.mobileapp.user.dto.JwtResponse;
+import com.kardoaward.mobileapp.user.dto.OnRegisterUserDto;
 import com.kardoaward.mobileapp.user.dto.UserShortDto;
+import com.kardoaward.mobileapp.user.mapper.UserMapper;
 import com.kardoaward.mobileapp.user.model.User;
 import com.kardoaward.mobileapp.user.service.UserService;
+import io.jsonwebtoken.Jwt;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -35,29 +40,27 @@ public class AuthenticationController {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Регистрация пользователя")
-    public User register(@RequestBody UserShortDto userShortDto) {
+    public OnRegisterUserDto register(@RequestBody UserShortDto userShortDto) {
         log.info("Registering user");
         userShortDto.setPassword(securityConfigurator.passwordEncoder().encode(userShortDto.getPassword()));
-        return userService.create(userShortDto);
+        return UserMapper.toOnRegisterUserDto(userService.create(userShortDto));
     }
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Авторизация пользователя")
-    public ResponseEntity<?> login(@RequestBody UserShortDto user) {
+    public JwtResponse login(@RequestBody UserShortDto user) {
         log.info("User login");
         Authentication authentication = null;
         try {
             authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
             authenticationManager.authenticate(authentication);
         } catch (BadCredentialsException e) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            throw new AuthException("Неверные имя пользователя/пароль");
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtCore.generateToken(authentication);
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        return new JwtResponse(jwt);
     }
 
-    record AuthenticationResponse(String token) {
-    }
 }
