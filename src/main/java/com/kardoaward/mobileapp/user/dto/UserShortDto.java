@@ -14,7 +14,7 @@ public class UserShortDto {
     @Email(message = "Поле email должно быть в форме email@host.domen")
     @NotEmpty
     private String email;
-    @NotEmpty
+    @NotEmpty(message = "Поле пароль не должно быть пустым")
     private String password;
 
 
