@@ -10,9 +10,13 @@ import com.kardoaward.mobileapp.events.dto.response.EventToEpicDtoResponse;
 import com.kardoaward.mobileapp.events.model.Event;
 import com.kardoaward.mobileapp.stage.mapper.StageMapper;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class EventMapper {
+
+    private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public static Event create(CreateEventDtoRequest eventDto) {
         return Event.builder()
@@ -32,11 +36,12 @@ public class EventMapper {
         if (eventDtoUpdate.getDescription() != null) {
             event.setDescription(eventDtoUpdate.getDescription());
         }
-        if (eventDtoUpdate.getStartDate() != null) {
-            event.setStart(eventDtoUpdate.getStartDate());
+        if (eventDtoUpdate.getStartDate() != null && !eventDtoUpdate.getStartDate().isEmpty()) {
+
+            event.setStart(LocalDate.parse(eventDtoUpdate.getStartDate(), DTF));
         }
-        if (eventDtoUpdate.getEndDate() != null) {
-            event.setEnd(eventDtoUpdate.getEndDate());
+        if (eventDtoUpdate.getEndDate() != null && !eventDtoUpdate.getEndDate().isEmpty()) {
+            event.setEnd(LocalDate.parse(eventDtoUpdate.getEndDate(), DTF));
         }
         if (eventDtoUpdate.getCategory() != null) {
             event.setCategory(eventDtoUpdate.getCategory());

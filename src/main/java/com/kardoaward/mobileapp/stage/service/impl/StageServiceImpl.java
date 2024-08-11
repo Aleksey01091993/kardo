@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -95,15 +96,26 @@ public class StageServiceImpl implements StageService {
         isDate(stageOnce, stage);
     }
 
-    private void isDate(final Stage stage, final UpdateStageDtoRequest stageUpdate) {
-        if (stageUpdate.getStartDate().isAfter(stageUpdate.getEndDate())) {
+    private void isDate(Stage stage, final UpdateStageDtoRequest stageUpdate) {
+        if ((stageUpdate.getStartDate() == null || stageUpdate.getStartDate().isEmpty()) &&
+                (stageUpdate.getEndDate() == null || stageUpdate.getEndDate().isEmpty())) {
+            return;
+        }
+        DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        if (isNullDate(stageUpdate.getStartDate())) {
+            stage.setStart(LocalDate.parse(stageUpdate.getStartDate(), DTF));
+        }
+        if (isNullDate(stageUpdate.getEndDate())) {
+            stage.setEnd(LocalDate.parse(stageUpdate.getEndDate(), DTF));
+        }
+        if (stage.getStart().isAfter(stage.getEnd())) {
             throw new ConflictError("the end date cannot be earlier than the start date");
         }
-        if (stageUpdate.getStartDate().isBefore(stage.getEvent().getStart()) ||
-                stageUpdate.getEndDate().isAfter(stage.getEvent().getEnd())) {
+        if (stage.getStart().isBefore(stage.getEvent().getStart()) ||
+                stage.getEnd().isAfter(stage.getEvent().getEnd())) {
             throw new ConflictError("The stage date cannot go beyond the event");
         }
-        isDate(stage.getEvent().getId(), stageUpdate.getStartDate(), stageUpdate.getEndDate());
+        isDate(stage.getEvent().getId(), stage.getStart(), stage.getEnd());
 
     }
 
@@ -112,6 +124,10 @@ public class StageServiceImpl implements StageService {
                 .isEmpty()) {
             throw new LocalDateRequestException("the stage date is overlapped with other stage dates of this event");
         }
+    }
+
+    private Boolean isNullDate(final String date) {
+        return date != null && !date.isEmpty();
     }
 
 }
