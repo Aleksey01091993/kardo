@@ -38,7 +38,7 @@ public class Request {
     @Enumerated(EnumType.STRING)
     @Column(name = "user_status")
     private UserStatus statusToUser;
-    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @ToString.Exclude
     private List<RequestStage> requestsStages;
 
