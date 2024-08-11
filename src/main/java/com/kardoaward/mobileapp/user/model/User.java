@@ -34,6 +34,8 @@ public class User {
     @Pattern(regexp = "^[a-zA-Z0-9@._-]+$", message = "Email может содержать только латинские буквы")
     private String email;
     private LocalDate birthday;
+    @Enumerated(EnumType.STRING)
+    private UserDirections direction;
     @Column(unique = true)
     private String phone;
     @Column(name = "social_media_url")

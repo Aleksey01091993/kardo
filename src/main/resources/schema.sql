@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS users
     patronymic varchar(50),
     email varchar(70) NOT NULL unique,
     birthday TIMESTAMP WITHOUT TIME ZONE,
+    direction varchar(15),
     phone varchar(12),
     social_media_url varchar(255),
     portfolio_url varchar(255),
