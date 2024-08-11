@@ -3,6 +3,7 @@ package com.kardoaward.mobileapp.user.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.kardoaward.mobileapp.request.model.Request;
+import com.kardoaward.mobileapp.status.UserStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
@@ -33,6 +34,8 @@ public class User {
     @Email(message = "Поле email должно быть в форме email@host.domen")
     @Pattern(regexp = "^[a-zA-Z0-9@._-]+$", message = "Email может содержать только латинские буквы")
     private String email;
+    @Enumerated(EnumType.STRING)
+    private UserSex sex;
     private LocalDate birthday;
     @Enumerated(EnumType.STRING)
     private UserDirections direction;

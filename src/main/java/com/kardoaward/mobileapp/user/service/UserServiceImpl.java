@@ -87,6 +87,9 @@ public class UserServiceImpl implements UserService {
         if (user.getSurname() != null) {
             oldUser.setSurname(user.getSurname());
         }
+        if (user.getSex() != null) {
+            oldUser.setSex(user.getSex());
+        }
         if (user.getDirection() != null) {
             oldUser.setDirection(user.getDirection());
         }

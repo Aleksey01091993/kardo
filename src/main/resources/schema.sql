@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS users
     surname varchar(50),
     patronymic varchar(50),
     email varchar(70) NOT NULL unique,
+    sex varchar(6),
     birthday TIMESTAMP WITHOUT TIME ZONE,
     direction varchar(15),
     phone varchar(12),
