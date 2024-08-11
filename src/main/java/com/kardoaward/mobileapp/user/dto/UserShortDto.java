@@ -19,6 +19,6 @@ public class UserShortDto {
             " и должно включать только буквы латинского алфавита, цифры и символы ._-")
     private String email;
     @NotEmpty(message = "Поле пароль не должно быть пустым")
-    @Size(min = 8, max = 64)
+    @Size(min = 8, max = 64, message = "Длина пароля должна быть не менее 8 и не более 64 символов")
     private String password;
 }
