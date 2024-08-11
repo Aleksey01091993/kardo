@@ -11,7 +11,7 @@ services:
       - POSTGRES_USER=kardoadmin
       - POSTGRES_PASSWORD=thisiskardoadmin
     volumes:
-      - /home/workshop/mobileapp/database:/var/lib/postgresql/data
+      - kardo-db-data:/var/lib/postgresql/data  # Добавление volume для базы данных
 
   kardo-app:
     build: .
@@ -30,3 +30,6 @@ services:
       - DB_PORT=5432
     volumes:
       - /home/workshop/mobileapp/kardo-mobile-app:/app/videos
+
+volumes:
+  kardo-db-data:  # Объявление volume для хранения данных базы
