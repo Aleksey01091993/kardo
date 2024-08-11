@@ -2,11 +2,14 @@ package com.kardoaward.mobileapp.user.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.kardoaward.mobileapp.request.model.Request;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
@@ -36,6 +39,9 @@ public class User {
     private String portfolioUrl;
     private String country;
     private String city;
+    @OneToMany(mappedBy = "requester", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<Request> requests;
     @Enumerated(EnumType.STRING)
     private UserRoles role = UserRoles.ROLE_USER;
 }
