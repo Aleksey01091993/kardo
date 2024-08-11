@@ -63,36 +63,61 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse badRequest(final NullRequestException e) {
+    public ApiError badRequest(NullRequestException e) {
         log.info(e.getMessage());
-        return new ErrorResponse(e.getMessage());
+        return ApiError.builder()
+                .message(e.getMessage())
+                .reason("Ошибка авторизации")
+                .status(HttpStatus.BAD_REQUEST.toString())
+                .timestamp(LocalDateTime.now())
+                .build();
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse emailException(final LocalDateRequestException e) {
+    public ApiError emailException(LocalDateRequestException e) {
         log.info(e.getMessage());
-        return new ErrorResponse(e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse internalServerError(final InternalServerErrorException e) {
-        log.info(e.getMessage());
-        return new ErrorResponse(e.getMessage());
+        return ApiError.builder()
+                .message(e.getMessage())
+                .reason("Ошибка авторизации")
+                .status(HttpStatus.CONFLICT.toString())
+                .timestamp(LocalDateTime.now())
+                .build();
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse conflict(final ConflictError e) {
+    public ApiError internalServerError(InternalServerErrorException e) {
         log.info(e.getMessage());
-        return new ErrorResponse(e.getMessage());
+        return ApiError.builder()
+                .message(e.getMessage())
+                .reason("Ошибка авторизации")
+                .status(HttpStatus.BAD_REQUEST.toString())
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ApiError conflict(ConflictError e) {
+        log.info(e.getMessage());
+        return ApiError.builder()
+                .message(e.getMessage())
+                .reason("конфликт")
+                .status(HttpStatus.CONFLICT.toString())
+                .timestamp(LocalDateTime.now())
+                .build();
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ErrorResponse conflict(final NoContent e) {
+    public ApiError conflict(NoContent e) {
         log.info(e.getMessage());
-        return new ErrorResponse(e.getMessage());
+        return ApiError.builder()
+                .message(e.getMessage())
+                .reason("нет данных")
+                .status(HttpStatus.NO_CONTENT.toString())
+                .timestamp(LocalDateTime.now())
+                .build();
     }
 }
