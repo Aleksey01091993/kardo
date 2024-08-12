@@ -31,7 +31,7 @@ public class VideoController {
 
             if (file.exists() || file.isReadable()) {
                 return ResponseEntity.ok()
-                        .contentType(MediaType.parseMediaType("video/quicktime"))
+                        .contentType(MediaType.APPLICATION_OCTET_STREAM)
                         .header(HttpHeaders.CONTENT_DISPOSITION,
                                 "inline; filename=\"" + file.getFilename() + "\"")
                         .body(file);
