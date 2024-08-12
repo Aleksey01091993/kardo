@@ -4,7 +4,9 @@ import com.kardoaward.mobileapp.user.dto.UserDto;
 import com.kardoaward.mobileapp.user.mapper.UserMapper;
 import com.kardoaward.mobileapp.user.model.User;
 import com.kardoaward.mobileapp.user.service.UserService;
+import com.kardoaward.mobileapp.video.dto.VideoDto;
 import com.kardoaward.mobileapp.video.model.Video;
+import com.kardoaward.mobileapp.video.mapper.VideoMapper;
 import com.kardoaward.mobileapp.video.service.VideoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -51,14 +53,16 @@ public class UserController {
     @GetMapping("/user/videos")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Получение всех видео от пользователя")
-    public List<Video> getVideosByUser() {
-        return videoService.getAllVideosByUserId();
+    public List<VideoDto> getVideosByUser() {
+        return videoService.getAllVideosByUserId().stream()
+                .map(VideoMapper::toVideoDto)
+                .toList();
     }
 
     @GetMapping("/user/videos/{videoId}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Получение видео пользователя по id видео")
-    public Video getVideoById(@PathVariable Long videoId) {
-        return videoService.getVideoByIdAndUserId(videoId);
+    public VideoDto getVideoById(@PathVariable Long videoId) {
+        return VideoMapper.toVideoDto(videoService.getVideoByIdAndUserId(videoId));
     }
 }
